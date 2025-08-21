@@ -1,0 +1,17 @@
+{
+  "login.title": "Welcome Back",
+  "login.subtitle": "Sign in to your account",
+  "login.emailLabel": "Email *",
+  "login.emailPlaceholder": "Enter your email",
+  "login.passwordLabel": "Password *",
+  "login.passwordPlaceholder": "Enter your password",
+  "login.rememberMe": "Remember me",
+  "login.forgotPassword": "Forgot Password?",
+  "login.signIn": "Sign in",
+  "login.signingIn": "Signing in...",
+  "login.noAccount": "Don't have an account?",
+  "login.signUp": "Sign up",
+  "login.footer": "Your Partner in Hospital Excellence • Secure • Reliable • Efficient",
+  "login.backHome": "← Back to home",
+  "login.invalid": "Invalid email or password"
+}

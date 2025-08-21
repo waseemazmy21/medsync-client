@@ -1,4 +1,8 @@
-import { useRouter } from "next/navigation";
+'use client'
+
+import Header from "@/components/Header";
+import { useAuth } from "@/context/AuthContext";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const ProtectedLayout = ({
@@ -6,13 +10,12 @@ const ProtectedLayout = ({
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
-    const router = useRouter()
-    const user = true
-    useEffect(() => {
-        if (!user) {
-            router.push('/login')
-        }
-    })
+    const {user} = useAuth()
+    console.log("user",user);
+    
+    if (!user) {
+        redirect('/login')
+    }
     return (
         <>
             {children}

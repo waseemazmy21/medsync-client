@@ -40,3 +40,25 @@ export type User = {
   bloodType: BloodType;
   allergies: string[]
 };
+
+export type Department = {
+  _id: string;
+  name: string;
+  nameAr: string;
+  description: string;
+  descriptionAr?: string;
+  numberOfReviews?: number;
+  staffCount?: number;
+  image?: string;
+  price?: number
+}
+export type Appointment = {
+  _id: string;
+  date: Date;
+  department?: {
+    name: string;
+    nameAr: string;
+  };
+  doctor?: User;
+  patient?: User;
+}

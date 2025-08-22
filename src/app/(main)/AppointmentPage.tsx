@@ -1,4 +1,4 @@
-
+"use client"
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import {
   getAppointments,
@@ -30,6 +30,44 @@ interface AppointmentForm {
   prescription: Prescription;
 }
 
+
+
+const EN = {
+  bookAppointment: 'Book Appointment',
+  dateTime: 'Date & Time',
+  doctorId: 'Doctor ID',
+  departmentId: 'Department ID',
+  notes: 'Notes',
+  medicine: 'Medicine',
+  dose: 'Dose',
+  submit: 'Book Appointment',
+  upcomingAppointments: 'Upcoming Appointments',
+  loading: 'Loading...',
+  error: 'Error fetching data',
+  noAppointments: 'No appointments',
+  prescription: 'Prescription',
+  doctor: 'Doctor',
+  department: 'Department',
+};
+
+const AR = {
+  bookAppointment: 'حجز موعد',
+  dateTime: 'التاريخ والوقت',
+  doctorId: 'معرف الطبيب',
+  departmentId: 'معرف القسم',
+  notes: 'ملاحظات',
+  medicine: 'الدواء',
+  dose: 'الجرعة',
+  submit: 'حجز الموعد',
+  upcomingAppointments: 'المواعيد القادمة',
+  loading: 'جاري التحميل...',
+  error: 'حدث خطأ أثناء جلب البيانات',
+  noAppointments: 'لا توجد مواعيد',
+  prescription: 'الوصفة الطبية',
+  doctor: 'الطبيب',
+  department: 'القسم',
+};
+
 const AppointmentPage: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [form, setForm] = useState<AppointmentForm>({
@@ -39,10 +77,20 @@ const AppointmentPage: React.FC = () => {
     notes: '',
     prescription: { medicine: '', dose: '' },
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [lang, setLang] = useState<'en' | 'ar'>('en');
+
+  const t = lang === 'ar' ? AR : EN;
 
   useEffect(() => {
-    getAppointments().then(setAppointments);
-  }, []);
+    setLoading(true);
+    getAppointments()
+      .then(setAppointments)
+      .catch(() => setError(t.error))
+      .finally(() => setLoading(false));
+    // eslint-disable-next-line
+  }, [lang]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -58,53 +106,72 @@ const AppointmentPage: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createAppointment(form);
-    const updated = await getAppointments();
-    setAppointments(updated);
+    setLoading(true);
+    setError(null);
+    try {
+      await createAppointment(form);
+      const updated = await getAppointments();
+      setAppointments(updated);
+    } catch {
+      setError(t.error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
-      <h1 className="text-2xl font-bold mb-6 text-primary">Book Appointment</h1>
+    <div className={`max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md mt-8${lang === 'ar' ? ' text-right' : ''}`}
+      dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="flex justify-end mb-4">
+        <Button variant="outline" size="sm" onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}>
+          {lang === 'ar' ? 'English' : 'العربية'}
+        </Button>
+      </div>
+      <h1 className="text-2xl font-bold mb-6 text-primary">{t.bookAppointment}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Date & Time</label>
+          <label className="block text-sm font-medium mb-1">{t.dateTime}</label>
           <input type="datetime-local" name="date" value={form.date} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Doctor ID</label>
-          <input type="text" name="doctor" value={form.doctor} onChange={handleChange} placeholder="Doctor ID" required className="w-full border rounded px-3 py-2" />
+          <label className="block text-sm font-medium mb-1">{t.doctorId}</label>
+          <input type="text" name="doctor" value={form.doctor} onChange={handleChange} placeholder={t.doctorId} required className="w-full border rounded px-3 py-2" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Department ID</label>
-          <input type="text" name="department" value={form.department} onChange={handleChange} placeholder="Department ID" required className="w-full border rounded px-3 py-2" />
+          <label className="block text-sm font-medium mb-1">{t.departmentId}</label>
+          <input type="text" name="department" value={form.department} onChange={handleChange} placeholder={t.departmentId} required className="w-full border rounded px-3 py-2" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Notes</label>
-          <textarea name="notes" value={form.notes} onChange={handleChange} placeholder="Notes" className="w-full border rounded px-3 py-2" />
+          <label className="block text-sm font-medium mb-1">{t.notes}</label>
+          <textarea name="notes" value={form.notes} onChange={handleChange} placeholder={t.notes} className="w-full border rounded px-3 py-2" />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Medicine</label>
-            <input type="text" name="medicine" value={form.prescription.medicine} onChange={handleChange} placeholder="Medicine" className="w-full border rounded px-3 py-2" />
+            <label className="block text-sm font-medium mb-1">{t.medicine}</label>
+            <input type="text" name="medicine" value={form.prescription.medicine} onChange={handleChange} placeholder={t.medicine} className="w-full border rounded px-3 py-2" />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Dose</label>
-            <input type="text" name="dose" value={form.prescription.dose} onChange={handleChange} placeholder="Dose" className="w-full border rounded px-3 py-2" />
+            <label className="block text-sm font-medium mb-1">{t.dose}</label>
+            <input type="text" name="dose" value={form.prescription.dose} onChange={handleChange} placeholder={t.dose} className="w-full border rounded px-3 py-2" />
           </div>
         </div>
-        <Button type="submit" className="w-full">Book Appointment</Button>
+        <Button type="submit" className="w-full">{t.submit}</Button>
       </form>
-      <h2 className="text-xl font-semibold mt-10 mb-4 text-primary">Upcoming Appointments</h2>
+      {loading && <div className="text-center text-muted mt-4">{t.loading}</div>}
+      {error && <div className="text-center text-destructive mt-4">{error}</div>}
+      <h2 className="text-xl font-semibold mt-10 mb-4 text-primary">{t.upcomingAppointments}</h2>
       <ul className="divide-y divide-muted">
+        {appointments.length === 0 && !loading && !error && (
+          <li className="py-4 text-center text-muted">{t.noAppointments}</li>
+        )}
         {appointments.map((appt) => (
           <li key={appt._id} className="py-4 flex flex-col gap-1">
-            <span className="font-medium">{new Date(appt.date).toLocaleString()}</span>
-            <span>Doctor: {typeof appt.doctor === 'object' ? appt.doctor.name : appt.doctor}</span>
-            <span>Department: {typeof appt.department === 'object' ? appt.department.name : appt.department}</span>
-            {appt.notes && <span>Notes: {appt.notes}</span>}
+            <span className="font-medium">{new Date(appt.date).toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US')}</span>
+            <span>{t.doctor}: {typeof appt.doctor === 'object' ? appt.doctor.name : appt.doctor}</span>
+            <span>{t.department}: {typeof appt.department === 'object' ? appt.department.name : appt.department}</span>
+            {appt.notes && <span>{t.notes}: {appt.notes}</span>}
             {appt.prescription && (
-              <span>Prescription: {appt.prescription.medicine} ({appt.prescription.dose})</span>
+              <span>{t.prescription}: {appt.prescription.medicine} ({appt.prescription.dose})</span>
             )}
           </li>
         ))}

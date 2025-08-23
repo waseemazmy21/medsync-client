@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { handleError } from "@/lib/utils";
 
 export default function SignUp() {
   const router = useRouter();
@@ -36,8 +37,8 @@ export default function SignUp() {
       });
       router.push("/dashboard");
       reset();
-    } catch {
-      setServerError("Invalid data");
+    } catch (error: unknown) {
+      setServerError(handleError(error));
     }
   };
 
@@ -45,9 +46,9 @@ export default function SignUp() {
     <div className="min-h-screen flex flex-col gap-4 p-4 items-center justify-center 
       bg-gradient-to-b from-blue-50 to-green-50 
       dark:from-gray-900 dark:to-gray-800">
-      
+
       <Logo />
-      
+
       <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h3 className="text-lg font-semibold text-center mb-1 flex items-center justify-center gap-2 dark:text-white">
           <User className="w-5 h-5" /> Create Account
@@ -69,9 +70,8 @@ export default function SignUp() {
                 maxLength: { value: 30, message: "Name must be at most 30 characters" },
               })}
               placeholder="Enter your full name"
-              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${
-                errors.name ? "border-red-500" : ""
-              }`}
+              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.name ? "border-red-500" : ""
+                }`}
             />
             <User className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message as string}</p>}
@@ -106,9 +106,8 @@ export default function SignUp() {
                 },
               })}
               placeholder="Enter phone number"
-              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${
-                errors.phone ? "border-red-500" : ""
-              }`}
+              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.phone ? "border-red-500" : ""
+                }`}
             />
             <Phone className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message as string}</p>}
@@ -118,9 +117,8 @@ export default function SignUp() {
           <div className="relative">
             <label className="block mb-1 font-medium dark:text-gray-200">Gender *</label>
             <select
-              className={`w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white ${
-                errors.gender ? "border-red-500" : ""
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.gender ? "border-red-500" : ""
+                }`}
               {...register("gender", { required: "Gender is required" })}
             >
               <option value="">Select Gender</option>
@@ -135,9 +133,8 @@ export default function SignUp() {
             <label className="block mb-1 font-medium dark:text-gray-200">Birth Date *</label>
             <input
               type="date"
-              className={`w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white ${
-                errors.birthDate ? "border-red-500" : ""
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.birthDate ? "border-red-500" : ""
+                }`}
               {...register("birthDate", { required: "Birth date is required" })}
             />
             {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate.message as string}</p>}
@@ -172,9 +169,8 @@ export default function SignUp() {
                 minLength: { value: 8, message: "Password must be at least 8 characters" }
               })}
               placeholder="Create password"
-              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${
-                errors.password ? "border-red-500" : ""
-              }`}
+              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.password ? "border-red-500" : ""
+                }`}
             />
             <Lock className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
             <span

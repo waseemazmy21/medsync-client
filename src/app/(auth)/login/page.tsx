@@ -9,6 +9,7 @@ import ResetPasswordModal from "@/components/ResetPasswordModal";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { handleError } from "@/lib/utils";
 
 export default function SignIn() {
   const router = useRouter();
@@ -24,8 +25,8 @@ export default function SignIn() {
       setServerError(null);
       await login(data);
       router.push("/dashboard");
-    } catch {
-      setServerError("Invalid email or password.");
+    } catch (error: unknown) {
+      setServerError(handleError(error));
     }
   };
 
@@ -67,7 +68,7 @@ export default function SignIn() {
             <label className="block mb-1 font-medium">Password</label>
             <input
               type={showPassword ? "text" : "password"}
-              {...register("password", { 
+              {...register("password", {
                 required: "Password is required",
                 minLength: { value: 8, message: "Password must be at least 8 characters" }
               })}

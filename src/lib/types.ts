@@ -29,18 +29,22 @@ export enum BloodType {
 }
 
 
+
 export type User = {
-  id: string;
+  _id: string;
   name: string;
   email: string;
-  
-  image?: string;
+  role: UserRole;
   phone: string;
+  department?: Department;
+  specialization?: string;
+  specializationAr?: string;
   gender: Gender;
   birthDate: Date;
   bloodType: BloodType;
   allergies: string[]
 };
+
 
 export type Department = {
   _id: string;

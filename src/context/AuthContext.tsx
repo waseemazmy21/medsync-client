@@ -1,32 +1,15 @@
 "use client";
 
-import { BloodType, Department, Gender } from "@/lib/types";
-import { login as loginService, loginData, register as registerService, registerData } from "@/services/authService";
-import api from "@/services/axios-instance";
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-// import Cookies from "js-cookie";
-
-type User = {
-  _id: string;
-  name: string;
-  email: string;
-  role:string;
-  image?: string;
-  phone: string;
-  department?: Department;
-  specialization?: string;
-  specializationAr?: string;
-  gender: Gender;
-  birthDate: Date;
-  bloodType: BloodType;
-  allergies: string[]
-};
+import { login as loginService, loginData, register as registerService, registerData, getUser } from "@/services/authService";
+import { createContext, useState, useEffect, ReactNode } from "react";
+import { User } from '@/lib/types'
 
 type AuthContextType = {
   user: User | null;
+  loading: boolean;
   login: (loginData: loginData) => Promise<void>;
   logout: () => void;
-  register: (data: registerData) => Promise<void>; 
+  register: (data: registerData) => Promise<void>;
   setUser: (user: User) => void
 };
 
@@ -34,30 +17,36 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  // const [loading, setLoading] = useState(true);
+  const [hydrate, setHydrate] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // محاولة جلب المستخدم عند التحميل (إذا فيه توكن)
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     getUser()
-  //       .then((res) => setUser(res.data))
-  //       .catch(() => setUser(null))
-  //       .finally(() => setLoading(false));
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    setHydrate(true);
+  }, [])
 
-    const login = async (data: loginData) => {
-      const res = await loginService(data);
-      setUser(res.data.user);
-    };
+  useEffect(() => {
+    if (!hydrate) return;
+    setLoading(true);
+    const token = localStorage.getItem("token");
+    if (token) {
+      getUser()
+        .then((res) => setUser(res.data.user))
+        .catch(() => logout())
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [hydrate]);
 
-    const register = async (data: registerData) => {
-        const res = await registerService(data);
-        setUser(res.data.user);
-    };
+  const login = async (data: loginData) => {
+    const res = await loginService(data);
+    setUser(res.data.user);
+  };
+
+  const register = async (data: registerData) => {
+    const res = await registerService(data);
+    setUser(res.data.user);
+  };
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -65,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register ,setUser }}>
+    <AuthContext.Provider value={{ user, login, logout, register, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,6 @@
 import { BloodType, Gender } from "@/lib/types"
 import api from "./axios-instance"
+import { handleError } from "@/lib/utils"
 
 export type loginData = {
     email: string,
@@ -7,14 +8,9 @@ export type loginData = {
 }
 
 export const login = async (loginData: loginData) => {
-    try{
-        const {data} = await api.post('/auth/login', loginData)        
-        localStorage.setItem("token", data.data.accessToken);
-        return data
-    } catch(err){
-        console.log("Error from login fun", err);
-        throw new Error(err?.message || "Invalide Server Error")
-    }
+    const { data } = await api.post('/auth/login', loginData)
+    localStorage.setItem("token", data.data.accessToken);
+    return data
 }
 
 
@@ -29,15 +25,16 @@ export type registerData = {
     allergies?: string
 }
 
-export const register = async (registerData:registerData ) => {
-    try {
-        console.log("registerData register",registerData);
-        const {data} = await api.post('/auth/register', registerData)
-        localStorage.setItem("token", data.data.accessToken);
-        return data
+export const register = async (registerData: registerData) => {
 
-    } catch (error) {
-        console.log("Error from register fun", error);
-        throw new Error(error?.response.data.message || "Invalide Server Error")
-    }
+    console.log("registerData register", registerData);
+    const { data } = await api.post('/auth/register', registerData)
+    localStorage.setItem("token", data.data.accessToken);
+    return data
+
+}
+
+export const getUser = async () => {
+    const { data } = await api.get('/auth/me')
+    return data
 }

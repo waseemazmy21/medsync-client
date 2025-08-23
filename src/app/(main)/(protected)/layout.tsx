@@ -1,22 +1,24 @@
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+'use client'
+
+import { AppointmentsProvider } from "@/context/AppointmentsContext";
+import { useAuth } from "@/hooks/useAuth";
+import { redirect, useRouter } from "next/navigation";
 
 const ProtectedLayout = ({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
-    const router = useRouter()
-    const user = true
-    useEffect(() => {
-        if (!user) {
-            router.push('/login')
-        }
-    })
+    const { user, loading } = useAuth()
+    console.log("user", user);
+
+    if (!loading && !user) {
+        redirect('/login')
+    }
     return (
-        <>
+        <AppointmentsProvider>
             {children}
-        </>
+        </AppointmentsProvider>
     )
 }
 

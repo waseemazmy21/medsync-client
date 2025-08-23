@@ -1,0 +1,17 @@
+{
+  "login.title": "مرحباً بعودتك",
+  "login.subtitle": "سجّل الدخول إلى حسابك",
+  "login.emailLabel": "البريد الإلكتروني *",
+  "login.emailPlaceholder": "أدخل بريدك الإلكتروني",
+  "login.passwordLabel": "كلمة المرور *",
+  "login.passwordPlaceholder": "أدخل كلمة المرور",
+  "login.rememberMe": "تذكرني",
+  "login.forgotPassword": "نسيت كلمة المرور؟",
+  "login.signIn": "تسجيل الدخول",
+  "login.signingIn": "جاري تسجيل الدخول...",
+  "login.noAccount": "ليس لديك حساب؟",
+  "login.signUp": "إنشاء حساب",
+  "login.footer": "شريكك في التميز الطبي • آمن • موثوق • فعّال",
+  "login.backHome": "← العودة إلى الرئيسية",
+  "login.invalid": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+}

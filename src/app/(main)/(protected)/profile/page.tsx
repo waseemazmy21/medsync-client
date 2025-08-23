@@ -29,10 +29,10 @@ import { User, Lock, Save, Edit3 } from "lucide-react"
 // import { useToast } from "@/hooks/use-toast"
 // import { z } from "zod"
 // import { patientService } from "@/lib/services"
-import { useAuth } from "@/context/AuthContext"
 import { Label } from "@/components/ui/label"
 import { updateUser, UserInfoUpdate } from "@/services/userServices"
 import { Gender } from "@/lib/types"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function ProfilePage() {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
@@ -433,6 +433,16 @@ export default function ProfilePage() {
                     <Label className="text-sm font-medium text-muted-foreground">Account Type</Label>
                     <p className="text-sm mt-1 capitalize">{user?.role}</p>
                   </div>
+                  {user?.role == "Doctor" && <>
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Department</Label>
+                    <p className="text-sm mt-1 capitalize">{user?.department?.name}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Specialization</Label>
+                    <p className="text-sm mt-1 capitalize">{user?.specialization}</p>
+                  </div>
+                  </>}
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Member Since</Label>
                     <p className="text-sm mt-1">

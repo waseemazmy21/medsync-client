@@ -1,6 +1,6 @@
 "use client";
 
-import { BloodType, Gender } from "@/lib/types";
+import { BloodType, Department, Gender } from "@/lib/types";
 import { login as loginService, loginData, register as registerService, registerData } from "@/services/authService";
 import api from "@/services/axios-instance";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
@@ -13,6 +13,9 @@ type User = {
   role:string;
   image?: string;
   phone: string;
+  department?: Department;
+  specialization?: string;
+  specializationAr?: string;
   gender: Gender;
   birthDate: Date;
   bloodType: BloodType;
@@ -27,7 +30,7 @@ type AuthContextType = {
   setUser: (user: User) => void
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -68,8 +71,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used inside AuthProvider");
-  return context;
-}

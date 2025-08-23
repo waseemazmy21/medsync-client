@@ -1,9 +1,8 @@
 'use client'
 
-import Header from "@/components/Header";
-import { useAuth } from "@/context/AuthContext";
+import { AppointmentsProvider } from "@/context/AppointmentsContext";
+import { useAuth } from "@/hooks/useAuth";
 import { redirect, useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const ProtectedLayout = ({
     children,
@@ -17,9 +16,9 @@ const ProtectedLayout = ({
         redirect('/login')
     }
     return (
-        <>
+        <AppointmentsProvider>
             {children}
-        </>
+        </AppointmentsProvider>
     )
 }
 

@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Navigation from "./Navigation";
 import Logo from "./Logo";
-import { useAuth } from "@/context/AuthContext";
 import { Button } from "./ui/button";
 import LocaleSwitcher from "./Lang";
+import { useAuth } from "@/hooks/useAuth";
 
 
 export default function Header() {

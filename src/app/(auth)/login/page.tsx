@@ -7,8 +7,8 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 import ResetPasswordModal from "@/components/ResetPasswordModal";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function SignIn() {
   const router = useRouter();

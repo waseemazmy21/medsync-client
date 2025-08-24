@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { handleError } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function SignIn() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function SignIn() {
   const onError = (error: any) => {
     console.log(error);
   };
-
+const t = useTranslations('Login');
   return (
     <div className="min-h-screen flex flex-col gap-4 items-center justify-center 
       bg-gradient-to-b from-blue-50 to-green-50  
@@ -42,7 +43,7 @@ export default function SignIn() {
       <Logo />
 
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-center mb-1 dark:text-white">Welcome Back</h3>
+        <h3 className="text-lg font-semibold text-center mb-1 dark:text-white">t{"head"}</h3>
         <p className="text-center text-gray-500 dark:text-gray-400 mb-4">Sign in to your account</p>
         {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
 

@@ -1,5 +1,45 @@
 {
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "departments": {
+    "desc": "Browse our specialized medical departments and book appointments",
+    "title": "Medical Departments"
+  },
+  "home": {
+    "ctaTitle": "Ready to Take Control of Your Health?",
+    "feature1Desc": "Schedule appointments with your preferred doctors across multiple departments with just a few clicks.",
+    "feature1Title": "Easy Appointment Booking",
+    "feature2Desc": "Browse through all available medical departments and find the right specialist for your needs.",
+    "feature2Title": "Department Directory",
+    "feature3Desc": "Your medical information is protected with enterprise-grade security and privacy measures.",
+    "feature3Title": "Secure & Private",
+    "featuresDesc": "Streamlined healthcare management designed with patients in mind",
+    "featuresTitle": "Everything You Need for Better Healthcare",
+    "heroDesc": "Book appointments, manage your medical records, and stay connected with your healthcare providers - all in one secure platform.",
+    "heroTitle": "Your Health,",
+    "heroTitleAccent": "Simplified",
+    "signIn": "Sign In",
+    "startJourney": "Start Your Journey"
+  },
   "login": {
-    "head": "Welcome Back"
+    "backToHome": "← Back to home",
+    "emailInvalid": "Invalid email address",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailRequired": "Email is required",
+    "forgotPassword": "Forgot password?",
+    "head": "Sign In",
+    "noAccount": "Don't have an account?",
+    "passwordLabel": "Password",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Password is required",
+    "rememberMe": "Remember me",
+    "sign": "Access your account",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "signUp": "Sign up",
+    "terms": "By signing in, you agree to our terms & privacy policy."
   }
 }

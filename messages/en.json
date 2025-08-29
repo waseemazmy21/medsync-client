@@ -41,5 +41,32 @@
     "signingIn": "Signing in...",
     "signUp": "Sign up",
     "terms": "By signing in, you agree to our terms & privacy policy."
-  }
+  },
+  "header": {
+  "logout": "Logout",
+  "login": "Login",
+  "getStarted": "Get Started"
+},
+"navigation": {
+  "dashboard": "Dashboard",
+  "departments": "Departments",
+  "appointments": "Appointments"
+},
+"resetPassword": {
+  "stepEmail": "Email",
+  "stepVerify": "Verify",
+  "stepPassword": "Password"
+},
+"patientDashboard": {
+  "welcome": "Welcome back, {name}!",
+  "desc": "Manage your appointments, view your medical history, and stay connected with your healthcare providers."
+},
+"doctorDashboard": {
+  "welcome": "Welcome, Dr. {name}!",
+  "totalAppointments": "Total Appointments",
+  "upcomingAppointments": "Upcoming Appointments",
+  "totalPatients": "Total Patients",
+  "recentFollowUps": "Recent Follow-Ups",
+  "completedToday": "Completed Today"
+}
 }

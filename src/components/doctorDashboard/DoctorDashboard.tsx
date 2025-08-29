@@ -12,12 +12,14 @@ import { useAuth } from "@/hooks/useAuth"
 import { useMemo } from "react"
 import { appointments } from "@/services/appointmentServices"
 import { useQuery } from "@tanstack/react-query"
+import { useTranslations } from 'next-intl'
 
 export default function DoctorDashboard() {
     console.log("DoctorDashboard Components");
     
-
   const {user} = useAuth()
+  const t = useTranslations('doctorDashboard');
+
 //   const { Appointments, pastAppointments, upcomingAppointments, todayAppointments, appointmentsLoading} = useAppointments()
     const {
     data: Appointments= [],
@@ -175,10 +177,9 @@ export default function DoctorDashboard() {
       <HeadSection>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Welcome, Dr. {user?.name?.split(" ")[0] || "Doctor"}!</h1>
+            <h1 className="text-2xl font-bold mb-2">{t('welcome', { name: user?.name?.split(" ")[0] || "Doctor" })}</h1>
             <p className="text-blue-100">
-              You have {todayAppointments.length} appointments today. Manage your patients and track their
-              progress.
+              {t('appointmentsToday', { count: todayAppointments.length })}
             </p>
           </div>
           <div className="hidden md:block">
@@ -196,8 +197,8 @@ export default function DoctorDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900">{Appointments.length}</p>
-                <p className="text-sm text-gray-600">Total Appointments</p>
-                <p className="text-xs text-green-600 mt-1">+{mockStats.weeklyAppointments} this week</p>
+                <p className="text-sm text-gray-600">{t('totalAppointments')}</p>
+                <p className="text-xs text-green-600 mt-1">{t('thisWeek', { count: mockStats.weeklyAppointments })}</p>
               </div>
             </div>
           </CardContent>
@@ -211,8 +212,8 @@ export default function DoctorDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900">{todayAppointments.length}</p>
-                <p className="text-sm text-gray-600">Upcoming Today</p>
-                <p className="text-xs text-blue-600 mt-1">{mockStats.completedToday} completed today</p>
+                <p className="text-sm text-gray-600">{t('upcomingToday')}</p>
+                <p className="text-xs text-blue-600 mt-1">{t('completedTodayCount', { count: mockStats.completedToday })}</p>
               </div>
             </div>
           </CardContent>
@@ -226,8 +227,8 @@ export default function DoctorDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900">{mockStats.recentFollowUps}</p>
-                <p className="text-sm text-gray-600">Follow-ups Due</p>
-                <p className="text-xs text-orange-600 mt-1">{mockStats.prescriptionsGiven} prescriptions given</p>
+                <p className="text-sm text-gray-600">{t('followUpsDue')}</p>
+                <p className="text-xs text-orange-600 mt-1">{t('prescriptionsGiven', { count: mockStats.prescriptionsGiven })}</p>
               </div>
             </div>
           </CardContent>
@@ -239,9 +240,9 @@ export default function DoctorDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-blue-600" />
-              Work Shifts
+              {t('workShifts')}
             </CardTitle>
-            <CardDescription>Your fixed working hours</CardDescription>
+            <CardDescription>{t('fixedWorkingHours')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {mockShifts.map((shift, index) => (
@@ -254,11 +255,11 @@ export default function DoctorDashboard() {
                     </span>
                   </div>
                   <Badge variant="secondary" className="text-xs">
-                    Shift {index + 1}
+                    {t('shift')} {index + 1}
                   </Badge>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-medium">Working Days:</p>
+                  <p className="text-sm text-gray-600 font-medium">{t('workingDays')}</p>
                   <div className="flex flex-wrap gap-1">
                     {shift.day.map((dayIndex) => (
                       <Badge key={dayIndex} variant="outline" className="text-xs px-2 py-1">
@@ -271,7 +272,7 @@ export default function DoctorDashboard() {
             ))}
             <Button variant="outline" size="sm" className="w-full mt-3 bg-transparent">
               <Plus className="h-4 w-4 mr-2" />
-              Manage Shifts
+              {t('manageShifts')}
             </Button>
           </CardContent>
         </Card>
@@ -280,28 +281,28 @@ export default function DoctorDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-green-600" />
-              Monthly Performance
+              {t('monthlyPerformance')}
             </CardTitle>
-            <CardDescription>Your practice statistics this month</CardDescription>
+            <CardDescription>{t('practiceStatistics')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Total Appointments</span>
+              <span className="text-sm text-gray-600">{t('totalAppointments')}</span>
               <span className="font-semibold">{mockStats.monthlyAppointments}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Average Rating</span>
+              <span className="text-sm text-gray-600">{t('averageRating')}</span>
               <div className="flex items-center gap-1">
                 <span className="font-semibold">{mockStats.averageRating}</span>
                 <span className="text-yellow-500">★</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Follow-up Rate</span>
+              <span className="text-sm text-gray-600">{t('followUpRate')}</span>
               <span className="font-semibold text-green-600">{mockStats.followUpRate}%</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Prescriptions Given</span>
+              <span className="text-sm text-gray-600">{t('prescriptionsGivenLabel')}</span>
               <span className="font-semibold">{mockStats.prescriptionsGiven}</span>
             </div>
           </CardContent>
@@ -313,13 +314,13 @@ export default function DoctorDashboard() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-primary" />
-                Today's Schedule
+                {t('todaysSchedule')}
               </CardTitle>
-              <CardDescription>Your appointments for today</CardDescription>
+              <CardDescription>{t('appointmentsForToday')}</CardDescription>
             </div>
             <Link href="/doctor/appointments">
               <Button variant="outline" size="sm">
-                View All
+                {t('viewAll')}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -353,13 +354,13 @@ export default function DoctorDashboard() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5 text-orange-600" />
-                Follow-ups Due
+                {t('followUpsDueTitle')}
               </CardTitle>
-              <CardDescription>Patients requiring follow-up</CardDescription>
+              <CardDescription>{t('patientsRequiringFollowUp')}</CardDescription>
             </div>
             <Link href="/doctor/appointments">
               <Button variant="outline" size="sm">
-                View All
+                {t('viewAll')}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -380,7 +381,7 @@ export default function DoctorDashboard() {
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <Clock className="h-3 w-3 text-orange-400" />
-                  <span className="text-xs text-orange-700">Due: {formatDate(appointment.followUpDate!)}</span>
+                  <span className="text-xs text-orange-700">{t('due')} {formatDate(appointment.followUpDate!)}</span>
                 </div>
               </div>
             ))}
@@ -390,8 +391,8 @@ export default function DoctorDashboard() {
         {/* Quick Actions */}
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks for managing your practice</CardDescription>
+            <CardTitle>{t('quickActions')}</CardTitle>
+            <CardDescription>{t('commonTasks')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4">
@@ -399,8 +400,8 @@ export default function DoctorDashboard() {
                 <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
                   <Plus className="h-5 w-5" />
                   <div className="text-left">
-                    <p className="font-medium">New Appointment</p>
-                    <p className="text-xs text-gray-500">Schedule patient visit</p>
+                    <p className="font-medium">{t('newAppointment')}</p>
+                    <p className="text-xs text-gray-500">{t('schedulePatientVisit')}</p>
                   </div>
                 </Button>
               </Link>
@@ -408,8 +409,8 @@ export default function DoctorDashboard() {
                 <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
                   <Calendar className="h-5 w-5" />
                   <div className="text-left">
-                    <p className="font-medium">All Appointments</p>
-                    <p className="text-xs text-gray-500">View schedule</p>
+                    <p className="font-medium">{t('allAppointments')}</p>
+                    <p className="text-xs text-gray-500">{t('viewSchedule')}</p>
                   </div>
                 </Button>
               </Link>
@@ -417,8 +418,8 @@ export default function DoctorDashboard() {
                 <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
                   <FileText className="h-5 w-5" />
                   <div className="text-left">
-                    <p className="font-medium">Medical Records</p>
-                    <p className="text-xs text-gray-500">Patient history</p>
+                    <p className="font-medium">{t('medicalRecords')}</p>
+                    <p className="text-xs text-gray-500">{t('patientHistory')}</p>
                   </div>
                 </Button>
               </Link>

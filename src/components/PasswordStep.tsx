@@ -1,18 +1,14 @@
 import { useForm } from "react-hook-form";
-// type PasswordStepProps = {
-//   password: string;
-//   setPassword: string;
-//   confirmPassword: string;
-//   setConfirmPassword: string;
-// //   onBack,
-// //   onClose,
-// }
+
+interface PasswordStepProps {
+  onBack: () => void;
+  onClose: () => void;
+}
 
 export default function PasswordStep({
-
   onBack,
   onClose,
-}) {
+}: PasswordStepProps) {
 
    const {
     register,
@@ -21,7 +17,7 @@ export default function PasswordStep({
     formState: { errors },
   } = useForm();
 
-  const submitPassword = (data) => {
+  const submitPassword = (data: any) => {
     console.log("New password set:", data.password);
     onClose();
   };

@@ -79,11 +79,11 @@ function Page() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">{t("ctaTitle")}</h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of patients who trust MedSync for their healthcare management.
+            {t("ctaDesc")}
           </p>
           <Link href="/register">
             <Button size="lg" variant="secondary">
-              Create Your Account
+              {t("createAccount")}
             </Button>
           </Link>
         </div>
@@ -96,7 +96,7 @@ function Page() {
             <Heart className="h-6 w-6" />
             <span className="text-xl font-bold">MedSync</span>
           </div>
-          <p className="text-gray-400 dark:text-gray-500">© 2024 MedSync. All rights reserved. Your health, our priority.</p>
+          <p className="text-gray-400 dark:text-gray-500">{t("footerTagline")}</p>
         </div>
       </footer>
     </div>

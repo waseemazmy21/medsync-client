@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import React from 'react'
+import { useTranslations } from 'next-intl';
 
 const navigationItems = [
-    { label: "Dashboard", value: "dashboard" },
-    { label: "Departments", value: "departments" },
-    { label: "Appointments", value: "appointments" },
+    { labelKey: "dashboard", value: "dashboard" },
+    { labelKey: "departments", value: "departments" },
+    { labelKey: "appointments", value: "appointments" },
 ]
 
 type NavProps = {
@@ -12,10 +13,15 @@ type NavProps = {
 }
 
 function Navigation({atherClasses}: NavProps) {
+    const t = useTranslations('navigation');
     
   return (
     <nav className={`${atherClasses} flex text-gray-700 dark:text-gray-300`}>
-        {navigationItems.map(item => <Link key={item.label} href={item.value} className="hover:text-blue-500">{item.label}</Link>)}
+        {navigationItems.map(item => (
+          <Link key={item.labelKey} href={item.value} className="hover:text-blue-500">
+            {t(item.labelKey)}
+          </Link>
+        ))}
     </nav>
   )
 }

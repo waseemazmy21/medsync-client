@@ -1,13 +1,18 @@
 import { useForm } from "react-hook-form";
 
-export default function EmailStep({ onNext, onClose }) {
+interface EmailStepProps {
+  onNext: () => void;
+  onClose: () => void;
+}
+
+export default function EmailStep({ onNext, onClose }: EmailStepProps) {
     const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const submitEmail = (data) => {
+  const submitEmail = (data: any) => {
     console.log("Email submitted:", data.email);
     onNext();
   };
@@ -21,8 +26,7 @@ export default function EmailStep({ onNext, onClose }) {
 
       <form onSubmit={handleSubmit(submitEmail)} className="space-y-4">
         
-        
-          <input
+        <input
         type="email"
         placeholder="Enter your email"
         className={`w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-200 ${

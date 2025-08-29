@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { handleError } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
+export default function Register() {
   const router = useRouter();
   const { register: createAccount } = useAuth();
   const t = useTranslations('register');
@@ -233,3 +234,4 @@ import { useTranslations } from "next-intl";
       </div>
     </div>
   );
+}

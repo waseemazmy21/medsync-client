@@ -108,11 +108,11 @@ export default function ProfilePage() {
     },
   })
 
-  const onProfileSubmit = (data) => {
+  const onProfileSubmit = (data: any) => {
     updateProfileMutation.mutate(data)
   }
 
-  const onPasswordSubmit = (data) => {
+  const onPasswordSubmit = (data: any) => {
     changePasswordMutation.mutate(data)
   }
 

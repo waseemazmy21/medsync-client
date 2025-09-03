@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { handleError } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 export default function SignUp() {
   const router = useRouter();
@@ -26,15 +27,21 @@ export default function SignUp() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   const onSubmit = async (data: any) => {
+    console.log("data", data);
+    
     try {
       setServerError(null);
       delete data.confirmPassword;
-      await createAccount({
+      // if(data.blood)
+      const regs = await createAccount({
         ...data,
         allergies: data.allergies
           ? data.allergies.split(",").map((a: string) => a.trim())
           : undefined,
       });
+
+      console.log("regs", regs);
+      
       router.push("/dashboard");
       reset();
     } catch (error: unknown) {
@@ -147,7 +154,7 @@ export default function SignUp() {
               className="w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white"
               {...register("bloodType")}
             >
-              <option value="">Select Blood Type</option>
+              <option>Select Blood Type</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
               <option value="B+">B+</option>
@@ -185,7 +192,7 @@ export default function SignUp() {
           {/* Confirm Password */}
           <div className="relative">
             <label className="block mb-1 font-medium dark:text-gray-200">Confirm Password *</label>
-            <input
+            <Input
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirmPassword", {
                 required: "Please confirm your password",

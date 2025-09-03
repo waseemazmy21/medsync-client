@@ -27,7 +27,7 @@ export default function Header() {
       <div className="container max-w-7xl mx-auto flex items-center justify-between p-4">
         <Logo />
         {/* Navbar (Desktop) */}
-        {user && <Navigation atherClasses="max-lg:hidden space-x-6"/>}
+        {user && <Navigation userRole={user.role} atherClasses="max-lg:hidden space-x-6"/>}
 
         {/* Icons */}
         <div className="flex items-center space-x-4">
@@ -87,7 +87,7 @@ export default function Header() {
             transition={{ duration: 0.3 }}
             className="lg:hidden bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 absolute w-full"
           >
-            <Navigation atherClasses="lg:hidden flex-col space-y-4 p-4 w-full"/>
+            <Navigation userRole={user.role} atherClasses="lg:hidden flex-col space-y-4 p-4 w-full"/>
           </motion.div>
         )}
       </AnimatePresence>}

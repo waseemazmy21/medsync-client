@@ -12,7 +12,7 @@ export enum UserRole {
 }
 
 export type Shift = {
-  day: (0 | 1 | 2 | 3 | 4 | 5 | 6)[]; // 0: Saturday, 1: Sunday, ..., 6: Friday
+  days: (0 | 1 | 2 | 3 | 4 | 5 | 6)[]; // 0: Saturday, 1: Sunday, ..., 6: Friday
   startTime: string; // "HH:mm"
   endTime: string; // "HH:mm"
 }
@@ -29,21 +29,25 @@ export enum BloodType {
 }
 
 
-
-export type User = {
+export type User = { 
   _id: string;
   name: string;
   email: string;
-  role: UserRole;
   phone: string;
-  department?: Department;
-  specialization?: string;
-  specializationAr?: string;
   gender: Gender;
   birthDate: Date;
+  role: UserRole;
   bloodType: BloodType;
-  allergies: string[]
+  allergies: string[];
 };
+
+export type Doctor = User & { 
+  department: Department;
+  specialization: string;
+  specializationAr: string;
+  shift: Shift;
+};
+
 
 
 export type Department = {
@@ -55,15 +59,47 @@ export type Department = {
   numberOfReviews?: number;
   staffCount?: number;
   image?: string;
-  price?: number
+  appointmentFee?: number;
+  averageRating: number;
+  availableDays: number[]
 }
+
+export type StatusAppointment = "scheduled" | "completed" | "cancelled"
+
+export type Prescription = {
+  medicine: string;
+  dose: string
+}[]
+
 export type Appointment = {
   _id: string;
   date: Date;
-  department?: {
-    name: string;
-    nameAr: string;
-  };
-  doctor?: User;
-  patient?: User;
+  department: Department;
+  doctor: Doctor;
+  patient: User;
+  status: StatusAppointment;
+  notes?: string;
+  prescription: Prescription;
+  followUpDate?: Date
+}
+
+export interface BookAppointment {
+  department: string
+  date: Date | undefined
+  notes: string | undefined
+}
+
+export interface UpdateAppointment {
+  prescription: Prescription
+  followUpDate?: Date
+  status?: StatusAppointment,
+}
+
+export type ReviewData = {
+  rating: number;
+  feedback: string;
+  patient: string;
+  doctor: string;
+  appointment: string;
+  department: string;
 }

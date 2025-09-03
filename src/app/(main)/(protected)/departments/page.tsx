@@ -9,7 +9,7 @@ function page() {
           <p className="text-gray-100">Browse our specialized medical departments and book appointments</p>
         </HeadSection>
         <DepartmentsGrid />
-      </div>
+    </div>
   )
 }
 

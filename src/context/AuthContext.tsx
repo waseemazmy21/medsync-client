@@ -2,21 +2,21 @@
 
 import { login as loginService, loginData, register as registerService, registerData, getUser } from "@/services/authService";
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { User } from '@/lib/types'
+import { Doctor, User } from '@/lib/types'
 
 type AuthContextType = {
-  user: User | null;
+  user: User | Doctor | null;
   loading: boolean;
   login: (loginData: loginData) => Promise<void>;
   logout: () => void;
   register: (data: registerData) => Promise<void>;
-  setUser: (user: User) => void
+  setUser: (user: User | Doctor) => void
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState< User | Doctor | null>(null);
   const [hydrate, setHydrate] = useState(false);
   const [loading, setLoading] = useState(true);
 

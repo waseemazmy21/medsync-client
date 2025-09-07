@@ -12,36 +12,17 @@ import { Appointment } from "@/lib/types"
 import HeadSection from "@/components/HeadSection"
 import { useAuth } from "@/hooks/useAuth"
 import { useAppointments } from "@/hooks/useAppointments"
+import { formatDate, getStatusColor } from "@/lib/utils"
 
-
-
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "upcoming":
-      return "bg-blue-100 text-blue-800"
-    case "completed":
-      return "bg-green-100 text-green-800"
-    case "cancelled":
-      return "bg-red-100 text-red-800"
-    default:
-      return "bg-gray-100 text-gray-800"
-  }
-}
-
-const formatDate = (dateString: Date) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  })
-}
 
 
 export default function PatientDashboard() {
   const {user} = useAuth()
-  const { pastAppointments, upcomingAppointments, appointmentsLoading} = useAppointments()
+  // const { scheduledAppointments, completedAppointments} = useAppointments()
+  const { 
+    scheduledAppointments:{data:scheduledApp = [], isPending: scheduledLoading}, 
+    completedAppointments:{data:completedApp = [], isPending: completedLoading}, 
+    todayAppointments} = useAppointments()
 
   const {
     data: Departments= [],
@@ -83,7 +64,7 @@ export default function PatientDashboard() {
                 <Calendar className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{upcomingAppointments.length}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{scheduledApp.length}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Upcoming Appointments</p>
               </div>
             </div>
@@ -97,7 +78,7 @@ export default function PatientDashboard() {
                 <FileText className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{pastAppointments.length}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{completedApp.length}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Past Appointments</p>
               </div>
             </div>
@@ -131,7 +112,7 @@ export default function PatientDashboard() {
               </CardTitle>
               <CardDescription>Your scheduled appointments</CardDescription>
             </div>
-            {upcomingAppointments.length > 3 && <Link href="/dashboard/appointments">
+            {scheduledApp.length > 3 && <Link href="/appointments">
               <Button variant="outline" size="sm">
                 View All
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -139,7 +120,7 @@ export default function PatientDashboard() {
             </Link>}
           </CardHeader>
           <CardContent className="space-y-4">
-            {appointmentsLoading ? (
+            {scheduledLoading ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="flex items-center space-x-4">
@@ -151,19 +132,19 @@ export default function PatientDashboard() {
                   </div>
                 ))}
               </div>
-            ) : upcomingAppointments.length > 0 ? (
-              upcomingAppointments.slice(0, 3).map((appointment: Appointment) => (
+            ) : scheduledApp.length > 0 ? (
+              scheduledApp.slice(0, 3).map((appointment: Appointment) => (
                 <div key={appointment._id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-accent rounded-lg">
                   <div className="flex items-center gap-4">
                     <div className="p-2 bg-primary rounded-lg">
                       <User className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{appointment.doctor?.name}</p>
-                      <p className="text-sm text-gray-600">{appointment.department?.name}</p>
+                      <p className="font-medium text-gray-900 dark:text-gray-50">{appointment.doctor?.name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-200">{appointment.department?.name}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <Clock className="h-3 w-3 text-gray-400" />
-                        <span className="text-xs text-gray-500">{formatDate(appointment.date)}</span>
+                        <Clock className="h-3 w-3 text-gray-400 dark:text-gray-300" />
+                        <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date)}</span>
                       </div>
                     </div>
                   </div>
@@ -195,7 +176,7 @@ export default function PatientDashboard() {
               </CardTitle>
               <CardDescription>Your past appointments</CardDescription>
             </div>
-            { pastAppointments.length > 3 && <Link href="/dashboard/appointments">
+            { completedApp.length > 3 && <Link href="/dashboard/appointments">
               <Button variant="outline" size="sm">
                 View All
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -203,9 +184,9 @@ export default function PatientDashboard() {
             </Link> }
           </CardHeader>
           <CardContent className="space-y-4">
-            {appointmentsLoading ? (
+            {completedLoading ? (
               <div className="space-y-3">
-                {[1, 2].map((i) => (
+                {[1, 2, 3].map((i) => (
                   <div key={i} className="flex items-center space-x-4">
                     <Skeleton className="h-12 w-12 rounded-full" />
                     <div className="space-y-2">
@@ -215,8 +196,8 @@ export default function PatientDashboard() {
                   </div>
                 ))}
               </div>
-            ) : pastAppointments.length > 0 ? (
-              pastAppointments.map((appointment: Appointment) => (
+            ) : completedApp.length > 0 ? (
+              completedApp.slice(0,3).map((appointment: Appointment) => (
                 <div key={appointment._id} className="p-4 bg-gray-50 rounded-lg  dark:bg-accent">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-4">

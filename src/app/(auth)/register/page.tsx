@@ -27,21 +27,20 @@ export default function SignUp() {
   const [serverError, setServerError] = useState<string | null>(null);
 
   const onSubmit = async (data: any) => {
-    console.log("data", data);
-    
     try {
       setServerError(null);
       delete data.confirmPassword;
-      // if(data.blood)
-      const regs = await createAccount({
+      if (!data.bloodType) {
+        delete data.bloodType;
+      }
+      const res = await createAccount({
         ...data,
         allergies: data.allergies
           ? data.allergies.split(",").map((a: string) => a.trim())
           : undefined,
       });
 
-      console.log("regs", regs);
-      
+
       router.push("/dashboard");
       reset();
     } catch (error: unknown) {
@@ -153,8 +152,9 @@ export default function SignUp() {
             <select
               className="w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white"
               {...register("bloodType")}
+              defaultValue=""
             >
-              <option>Select Blood Type</option>
+              <option value="">Select Blood Type</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
               <option value="B+">B+</option>

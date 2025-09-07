@@ -1,0 +1,2 @@
+- registration form: the blod type is required 
+- 

@@ -43,11 +43,8 @@ export function ReviewModal({ appointment, open, onOpenChange }: ReviewModalProp
 
   const submitReviewMutation = useMutation({
     mutationFn: async (data: ReviewData) => {
-      console.log("data", data);
-
+      
       const response = await addReview(data)
-      console.log("review response", response.data);
-
       return response.data
     },
     onSuccess: () => {

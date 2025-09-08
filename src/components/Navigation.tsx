@@ -5,6 +5,7 @@ const navigationItems = [
     { label: "Dashboard", value: "dashboard" },
     { label: "Departments", value: "departments", notView: "Doctor" },
     { label: "Appointments", value: "appointments" },
+    { label: "Report", value: "report", notView: "Patient" },
 ]
 
 type NavProps = {

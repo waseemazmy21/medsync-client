@@ -1,4 +1,4 @@
-import { BookAppointment, UpdateAppointment } from "@/lib/types";
+import { Appointment, BookAppointment, UpdateAppointment } from "@/lib/types";
 import api from "./axios-instance";
 
 export async function appointments(status: string){
@@ -15,7 +15,7 @@ export async function appointments(status: string){
 }
 
 
-export async function bookAppointment(bookingData: BookAppointment){
+export async function bookAppointment(bookingData: Appointment){
     try {
         // const res = api.get("/appointment?status=upcoming&limit=3")
         const res = await api.post("/appointment", bookingData)

@@ -106,10 +106,6 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
       )}
       {appointment.status === "scheduled" && isDoctor && (
         <div className="flex gap-2 mt-4">
-          <Button variant="outline" size="sm" onClick={() => console.log("View Details comleted")} className="flex-1">
-            <Eye className="h-3 w-3 mr-1" />
-            View Details comleted
-          </Button>
           <Button variant="default" size="sm" onClick={() => handleUpdateAppointment(appointment)} className="flex-1">
             <Edit className="h-3 w-3 mr-1" />
             Update

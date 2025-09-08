@@ -1,17 +1,23 @@
 import { Appointment, ReviewData } from "@/lib/types";
-import { appointments } from "@/services/appointmentServices";
-import { addReview } from "@/services/reviewServices";
-import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { createContext, ReactNode, useMemo } from "react";
+import { handleError } from "@/lib/utils";
+import { appointments, bookAppointment as bookAppointmentApi, updateAppointment as updateAppointmentApi } from "@/services/appointmentServices";
+import { useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import { createContext, ReactNode } from "react";
+import { toast } from "sonner";
+
+type UpdateAppointmentVariables = { data: Appointment; appointmentID: string };
 
 type AppointmentsContextType = {
   scheduledAppointments: UseQueryResult<any, Error>;
   completedAppointments: UseQueryResult<any, Error>;
+  bookAppointment: UseMutationResult<Appointment, any, Appointment>;
+  updateAppointment: UseMutationResult<Appointment, any, UpdateAppointmentVariables>;
 };
 
 export const AppointmentsContext = createContext<AppointmentsContextType | undefined>(undefined)
 
 export function AppointmentsProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient()
 
   const scheduledAppointments = useQuery({
     queryKey: ["scheduledAppointments"],
@@ -32,39 +38,37 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
     }
   })
 
+  const bookAppointment = useMutation({
+      mutationFn: async (data: Appointment) => {
+        const response = await bookAppointmentApi(data)
+        return response
+      },
+      onSuccess: (data) => {
+        toast.success(data.message || "Appointment booked successfully")
+        console.log("Booked",data);
+        
+        queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
+      },
+      onError: (error: any) => {
+        toast.error(handleError(error))
+      },
+    })
 
-  //  const submitReviewMutation = useMutation({
-  //   mutationFn: async (data: ReviewData) => {
-  //     console.log("data", data);
+  const updateAppointment = useMutation({
+      mutationFn: async ({data,appointmentID}: UpdateAppointmentVariables) => {
+        const response = await updateAppointmentApi(appointmentID, data)
+        return response
+      },
+      onSuccess: (data: any) => {
+        toast.success(data.message)
+        queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
+      },
+      onError: (error: any) => {
+        toast.success(handleError(error));
+      },
+    })
 
-  //     const response = await addReview(data)
-  //     console.log("review response",response.data);
-
-  //     return response.data
-  //   },
-  //   onSuccess: () => {
-  //   //   toast({
-  //   //     title: "Review submitted",
-  //   //     description: "Thank you for your feedback!",
-  //   //   })\
-  //     console.log("review onSuccess Thank you for your feedback!");
-
-  //     queryClient.invalidateQueries({ queryKey: ["appointments"] })
-  //     onOpenChange(false)
-  //     reset()
-  //   },
-  //   onError: (error: any) => {
-  //   //   toast({
-  //   //     title: "Error",
-  //   //     description: error.response?.data?.message || "Failed to submit review",
-  //   //     variant: "destructive",
-  //   //   })
-  //     console.log("review onError",error);
-
-  //   },
-  // })
-
-  const contextValue = { scheduledAppointments, completedAppointments }
+  const contextValue = { scheduledAppointments, completedAppointments, bookAppointment, updateAppointment }
 
 
   return (

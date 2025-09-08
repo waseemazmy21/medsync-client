@@ -12,7 +12,7 @@ export enum UserRole {
 }
 
 export type Shift = {
-  days: (0 | 1 | 2 | 3 | 4 | 5 | 6)[]; // 0: Saturday, 1: Sunday, ..., 6: Friday
+  days: number[]; // 0: Saturday, 1: Sunday, ..., 6: Friday
   startTime: string; // "HH:mm"
   endTime: string; // "HH:mm"
 }

@@ -24,12 +24,11 @@ export function Appointments() {
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
   const [showReviewModal, setShowReviewModal] = useState(false)
 
-  const {user} = useAuth()
-  // const { scheduledAppointments, completedAppointments, todayAppointments} = useAppointments()
-  const { 
-      scheduledAppointments:{data:scheduledApp = [], isPending: scheduledLoading}, 
-      completedAppointments:{data:completedApp = [], isPending: completedLoading}, 
-      todayAppointments} = useAppointments()
+  const { user } = useAuth()
+  const {
+    scheduledAppointments: { data: scheduledApp = [], isPending: scheduledLoading },
+    completedAppointments: { data: completedApp = [], isPending: completedLoading },
+  } = useAppointments()
 
   const isDoctor = user?.role === "Doctor"
   const isPatient = user?.role === "Patient"
@@ -39,7 +38,7 @@ export function Appointments() {
     setShowUpdateModal(true)
   }
 
-    const handleViewPrescription = (appointment: Appointment) => {
+  const handleViewPrescription = (appointment: Appointment) => {
     setSelectedAppointment(appointment)
     setShowPrescriptionModal(true)
   }
@@ -62,7 +61,7 @@ export function Appointments() {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="upcoming" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            Upcoming ({(isDoctor ? todayAppointments : scheduledApp).length})
+            Upcoming Appointments ({scheduledApp.length})
           </TabsTrigger>
           <TabsTrigger value="completed" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
@@ -74,10 +73,10 @@ export function Appointments() {
           {(scheduledApp).length > 0 ? (
             <div className="space-y-4">
               {(scheduledApp).map((appointment: Appointment) => (
-                <AppointmentCard key={appointment._id} appointment={appointment} 
-                  handleUpdateAppointment={handleUpdateAppointment} 
-                  handleViewPrescription={handleViewPrescription} 
-                  handleReviewAppointment={handleReviewAppointment} 
+                <AppointmentCard key={appointment._id} appointment={appointment}
+                  handleUpdateAppointment={handleUpdateAppointment}
+                  handleViewPrescription={handleViewPrescription}
+                  handleReviewAppointment={handleReviewAppointment}
                   isDoctor={isDoctor} />
               ))}
             </div>
@@ -105,10 +104,10 @@ export function Appointments() {
           {completedApp.length > 0 ? (
             <div className="space-y-4">
               {completedApp.map((appointment: Appointment) => (
-                <AppointmentCard key={appointment._id} appointment={appointment} 
-                  handleUpdateAppointment={handleUpdateAppointment} 
-                  handleViewPrescription={handleViewPrescription} 
-                  handleReviewAppointment={handleReviewAppointment} 
+                <AppointmentCard key={appointment._id} appointment={appointment}
+                  handleUpdateAppointment={handleUpdateAppointment}
+                  handleViewPrescription={handleViewPrescription}
+                  handleReviewAppointment={handleReviewAppointment}
                   isDoctor={isDoctor} />
               ))}
             </div>
@@ -131,18 +130,19 @@ export function Appointments() {
         onOpenChange={setShowUpdateModal}
       />
 
-      <PrespectionModel 
+      <PrespectionModel
         appointment={selectedAppointment}
         open={showPrescriptionModal}
         onOpenChange={setShowPrescriptionModal}
       />
+   
+        <ReviewModal
+          appointment={selectedAppointment}
+          open={showReviewModal}
+          onOpenChange={setShowReviewModal}
+          key={selectedAppointment?._id}
+        />
 
-      <ReviewModal 
-        appointment={selectedAppointment}
-        open={showReviewModal}
-        onOpenChange={setShowReviewModal}
-        key={selectedAppointment?._id}
-      />
     </div>
   )
 }

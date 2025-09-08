@@ -3,40 +3,35 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, Users, FileText, Plus, ArrowRight, Stethoscope, TrendingUp, Activity, User } from "lucide-react"
+import { Calendar, Clock, Users, ArrowRight, Stethoscope, User } from "lucide-react"
 import Link from "next/link"
 import HeadSection from "../HeadSection"
-import { Appointment, Doctor, Shift } from "@/lib/types"
+import { Appointment, Doctor } from "@/lib/types"
 import { useAppointments } from "@/hooks/useAppointments"
 import { useAuth } from "@/hooks/useAuth"
-import { useMemo } from "react"
-import { appointments } from "@/services/appointmentServices"
-import { useQuery } from "@tanstack/react-query"
 import { formatDate, getDayName, getStatusColor } from "@/lib/utils"
 import { Skeleton } from "../ui/skeleton"
 
 
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(":")
-    const hour = Number.parseInt(hours)
-    const ampm = hour >= 12 ? "PM" : "AM"
-    const displayHour = hour % 12 || 12
-    return `${displayHour}:${minutes} ${ampm}`
-  }
+const formatTime = (time: string) => {
+  const [hours, minutes] = time.split(":")
+  const hour = Number.parseInt(hours)
+  const ampm = hour >= 12 ? "PM" : "AM"
+  const displayHour = hour % 12 || 12
+  return `${displayHour}:${minutes} ${ampm}`
+}
 export default function DoctorDashboard() {
-    console.log("DoctorDashboard Components");
-    
 
-  const {user} = useAuth()
-  const { scheduledAppointments:{data:scheduledApp = [], isPending: scheduledLoading}, completedAppointments:{data:completedApp = []}, todayAppointments} = useAppointments()
+  const { user } = useAuth()
+  const {
+    scheduledAppointments: { data: scheduledApp = [], isPending: scheduledLoading },
+    completedAppointments: { data: completedApp = [] },
+  } = useAppointments()
 
-
-  console.log("pastAppointments",scheduledApp);
-  console.log("upcomingAppointments",completedApp);
-  console.log("todayAppointments",todayAppointments);
 
   const doctor = user as Doctor;
   const shift = doctor.shift;
+
 
   return (
     <>
@@ -46,7 +41,7 @@ export default function DoctorDashboard() {
           <div>
             <h1 className="text-2xl font-bold mb-2">Welcome, Dr. {user?.name?.split(" ")[0] || "Doctor"}!</h1>
             <p className="text-blue-100">
-              You have {todayAppointments.length} appointments today. Manage your patients and track their
+              You have {scheduledApp.length} appointments today. Manage your patients and track their
               progress.
             </p>
           </div>
@@ -78,7 +73,7 @@ export default function DoctorDashboard() {
                 <Clock className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{todayAppointments.length}</p>
+                <p className="text-2xl font-bold text-gray-900">{scheduledApp.length}</p>
                 <p className="text-sm text-gray-600">Upcoming Today</p>
               </div>
             </div>
@@ -96,24 +91,24 @@ export default function DoctorDashboard() {
             <CardDescription>Your fixed working hours</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-              <div className="p-4 bg-blue-50 dark:bg-gray-900 rounded-lg border border-blue-200">
-                <div className="flex items-center gap-2 ">
-                  <Clock className="h-4 w-4 text-blue-600" />
-                  <span className="font-semibold ">
-                    {formatTime(shift.startTime)} - {formatTime(shift.endTime)}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Working Days:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {shift.days.map((dayIndex: number) => (
-                      <Badge key={dayIndex} variant="outline" className="text-xs px-2 py-1">
-                        {getDayName(dayIndex)}
-                      </Badge>
-                    ))}
-                  </div>
+            <div className="p-4 bg-blue-50 dark:bg-gray-900 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 ">
+                <Clock className="h-4 w-4 text-blue-600" />
+                <span className="font-semibold ">
+                  {formatTime(shift.startTime)} - {formatTime(shift.endTime)}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Working Days:</p>
+                <div className="flex flex-wrap gap-1">
+                  {shift.days.map((dayIndex: number) => (
+                    <Badge key={dayIndex} variant="outline" className="text-xs px-2 py-1">
+                      {getDayName(dayIndex)}
+                    </Badge>
+                  ))}
                 </div>
               </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -123,11 +118,11 @@ export default function DoctorDashboard() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-primary" />
-                Today's Schedule
+                Upcoming Schedule
               </CardTitle>
               <CardDescription>Your appointments for today</CardDescription>
             </div>
-            {todayAppointments.length > 3 && <Link href="/doctor/appointments">
+            {scheduledApp.length > 3 && <Link href="/appointments">
               <Button variant="outline" size="sm">
                 View All
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -147,60 +142,60 @@ export default function DoctorDashboard() {
                   </div>
                 ))}
               </div>
-            ) :  todayAppointments.length > 0 ? (
-              todayAppointments.slice(0, 3).map((appointment: Appointment) => (
-              <div key={appointment._id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-accent rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary rounded-lg">
-                    <Users className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-gray-50 text-sm">{appointment?.patient?.name}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Clock className="h-3 w-3 text-gray-400 dark:text-gray-300" />
-                      <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date)}</span>
+            ) : scheduledApp.length > 0 ? (
+              scheduledApp.slice(0, 3).map((appointment: Appointment) => (
+                <div key={appointment._id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-accent rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-primary rounded-lg">
+                      <Users className="h-4 w-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-gray-50 text-sm">{appointment?.patient?.name}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Clock className="h-3 w-3 text-gray-400 dark:text-gray-300" />
+                        <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date)}</span>
+                      </div>
                     </div>
                   </div>
+                  <Badge className={getStatusColor("upcoming")}>upcoming</Badge>
                 </div>
-                <Badge className={getStatusColor("upcoming")}>upcoming</Badge>
-              </div>
-            ))
-           ) : (
+              ))
+            ) : (
               <div className="text-center py-8">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600 dark:text-gray-400 mb-4">No appointments today</p>
               </div>
             )
-          }
+            }
           </CardContent>
         </Card>
       </div>
 
-        {/* Quick Actions */}
+      {/* Quick Actions */}
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
           <CardDescription>Common tasks for managing your practice</CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
-            <Link href="/appointments">
-              <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
-                <Calendar className="h-5 w-5" />
-                <div className="text-left">
-                  <p className="font-medium">All Appointments</p>
-                  <p className="text-xs text-gray-500">View schedule</p>
-                </div>
-              </Button>
-            </Link>
-            <Link href="/profile">
-              <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
-                <User className="h-5 w-5" />
-                <div className="text-left">
-                  <p className="font-medium">Update Profile</p>
-                  <p className="text-xs text-gray-500">Manage your information</p>
-                </div>
-              </Button>
-            </Link>
+          <Link href="/appointments">
+            <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
+              <Calendar className="h-5 w-5" />
+              <div className="text-left">
+                <p className="font-medium">All Appointments</p>
+                <p className="text-xs text-gray-500">View schedule</p>
+              </div>
+            </Button>
+          </Link>
+          <Link href="/profile">
+            <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
+              <User className="h-5 w-5" />
+              <div className="text-left">
+                <p className="font-medium">Update Profile</p>
+                <p className="text-xs text-gray-500">Manage your information</p>
+              </div>
+            </Button>
+          </Link>
           {/* </div> */}
         </CardContent>
       </Card>

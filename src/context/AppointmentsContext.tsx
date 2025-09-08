@@ -5,22 +5,19 @@ import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack
 import { createContext, ReactNode, useMemo } from "react";
 
 type AppointmentsContextType = {
-    scheduledAppointments: UseQueryResult<any, Error>;
-    completedAppointments: UseQueryResult<any, Error>;
-    todayAppointments: Appointment[];
+  scheduledAppointments: UseQueryResult<any, Error>;
+  completedAppointments: UseQueryResult<any, Error>;
 };
 
 export const AppointmentsContext = createContext<AppointmentsContextType | undefined>(undefined)
 
-export function AppointmentsProvider({ children }: { children: ReactNode }){
-  const queryClient = useQueryClient()
-  
+export function AppointmentsProvider({ children }: { children: ReactNode }) {
+
   const scheduledAppointments = useQuery({
     queryKey: ["scheduledAppointments"],
     queryFn: async () => {
-      const {data} = await appointments("scheduled")
-      console.log("Response DashboardPage scheduled",data.appointments);
-      
+      const { data } = await appointments("scheduled")
+
       return data.appointments || []
     }
   })
@@ -28,27 +25,21 @@ export function AppointmentsProvider({ children }: { children: ReactNode }){
   const completedAppointments = useQuery({
     queryKey: ["completedAppointments"],
     queryFn: async () => {
-      const {data} = await appointments("completed")
-      console.log("Response DashboardPage completed",data.appointments);
-      
+      const { data } = await appointments("completed")
+      console.log("Response DashboardPage completed", data.appointments);
+
       return data.appointments || []
     }
   })
 
-  const todayAppointments = useMemo(()=> {
-    const todayScheduled = scheduledAppointments.data?.filter((appointment: Appointment) => new Date(appointment.date).getDate() == new Date().getDate()) || []
-    const todayCompleted = completedAppointments.data?.map((appointment: Appointment) => new Date(appointment.date).getDate() == new Date().getDate()) || []
-
-    return [...todayScheduled, ...todayCompleted];
-  },[scheduledAppointments, completedAppointments])
 
   //  const submitReviewMutation = useMutation({
   //   mutationFn: async (data: ReviewData) => {
   //     console.log("data", data);
-      
+
   //     const response = await addReview(data)
   //     console.log("review response",response.data);
-      
+
   //     return response.data
   //   },
   //   onSuccess: () => {
@@ -73,7 +64,7 @@ export function AppointmentsProvider({ children }: { children: ReactNode }){
   //   },
   // })
 
-  const contextValue = { scheduledAppointments, completedAppointments, todayAppointments}
+  const contextValue = { scheduledAppointments, completedAppointments }
 
 
   return (

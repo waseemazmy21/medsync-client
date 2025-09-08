@@ -8,7 +8,6 @@ import { Badge } from "../ui/badge";
 
 const isTodayAppointment = (date: Date) => formatDate(date) == formatDate(new Date())
 
-
 type Props = {
   handleUpdateAppointment: (appointment: Appointment) => void;
   handleViewPrescription: (appointment: Appointment) => void;
@@ -72,12 +71,12 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
           </div>
         </div>
       )}
-      {appointment.status === "completed" && (
+      {(appointment.status === "completed" && (!isDoctor || (isDoctor && appointment.review))) && (
         <div className="mt-4 p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Star className="h-4 w-4 text-yellow-600" />
-              <span className="text-sm font-medium text-yellow-900">{appointment.review ? "You rated this appointment" : "Rate this appointment"}</span>
+              <span className="text-sm font-medium text-yellow-900">{appointment.review ? "Appointment Rating" : "Rate this appointment"}</span>
             </div>
             <Button
               variant="outline"

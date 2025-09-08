@@ -32,10 +32,10 @@ interface UpdateAppointmentModalProps {
 export function UpdateAppointmentModal({ appointment, open, onOpenChange }: UpdateAppointmentModalProps) {
   // const [isLoading, setIsLoading] = useState(false)
   const queryClient = useQueryClient()
-  
+
   const { user } = useAuth()
   const doctor = user as Doctor
-  
+
   const {
     register,
     handleSubmit,
@@ -57,30 +57,30 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
     name: "prescription",
   })
 
-   useEffect(() => {
+  useEffect(() => {
     if (appointment) {
       reset({
-      prescription: appointment.prescription?.length
-        ? appointment.prescription
-        : [],
-          followUpDate: appointment.followUpDate ?? undefined,
-          status: appointment.status ?? undefined,
-    });
+        prescription: appointment.prescription?.length
+          ? appointment.prescription
+          : [],
+        followUpDate: appointment.followUpDate ?? undefined,
+        status: appointment.status ?? undefined,
+      });
     }
   }, [appointment, reset])
 
   const originalData = useMemo(() => {
-        console.log("originalData");
+    console.log("originalData");
 
     return appointment
       ? {
-          prescription: appointment.prescription ?? [],
-          followUpDate: appointment.followUpDate ?? undefined,
-          status: appointment.status ?? undefined,
-        }
+        prescription: appointment.prescription ?? [],
+        followUpDate: appointment.followUpDate ?? undefined,
+        status: appointment.status ?? undefined,
+      }
       : null
   }, [appointment])
-    
+
 
   const hasChanges = useMemo(() => {
     if (!originalData) return false
@@ -88,17 +88,17 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
     const current = watch()
     return JSON.stringify(current) !== JSON.stringify(originalData)
   }, [watch(), originalData])
-  
- const updateAppointmentMutation = useMutation({
+
+  const updateAppointmentMutation = useMutation({
     mutationFn: async (data: UpdateAppointment) => {
       console.log("bookAppointmentMutation", data);
-      
-      const response = await updateAppointment(appointment?._id as string ,data)
+
+      const response = await updateAppointment(appointment?._id as string, data)
       return response.data
     },
     onSuccess: (data: UpdateAppointment) => {
       console.log("data updated", data);
-      
+
       queryClient.invalidateQueries({ queryKey: ["appointments"] })
       handleClose()
     },
@@ -112,8 +112,8 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
       delete (data as any).prescription
     }
 
-    console.log("onSubmit",data);
-    
+    console.log("onSubmit", data);
+
     updateAppointmentMutation.mutate(data)
   }
 
@@ -123,21 +123,21 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
   }
 
   const addMedicine = () => {
-     const lastIndex = fields.length - 1;
-  const lastField = watch("prescription")[lastIndex];
-  
-  // console.log("addMedicine fields lastIndex", lastIndex);
-  // console.log("addMedicine fields", watch("prescription")[lastIndex]);
+    const lastIndex = fields.length - 1;
+    const lastField = watch("prescription")[lastIndex];
 
-  if ((!lastField?.medicine?.trim() || !lastField?.dose?.trim()) && fields.length != 0) {
-    alert("Please fill in the current medicine and dosage before adding another.");
-    return;
-  }
+    // console.log("addMedicine fields lastIndex", lastIndex);
+    // console.log("addMedicine fields", watch("prescription")[lastIndex]);
+
+    if ((!lastField?.medicine?.trim() || !lastField?.dose?.trim()) && fields.length != 0) {
+      alert("Please fill in the current medicine and dosage before adding another.");
+      return;
+    }
     append({ medicine: "", dose: "" })
-    
-    console.log("addMedicinea2", fields[fields.length -1]);
+
+    console.log("addMedicinea2", fields[fields.length - 1]);
   }
-  
+
   const removeMedicine = (index: number) => {
     console.log("removeMedicine", fields);
     if (fields.length > 0) {
@@ -176,7 +176,7 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
 
           {/* Hidden appointment ID */}
           {/* <input type="hidden" {...register("appointmentId")} value={appointment._id} /> */}
- <div className="space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="status">Appointment Status</Label>
             <Select
               defaultValue={appointment.status}
@@ -208,15 +208,15 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium text-gray-900">Medicine {index + 1}</h4>
                     {/* {fields.length > 1 && ( */}
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeMedicine(index)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeMedicine(index)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                     {/* )} */}
                   </div>
 
@@ -228,7 +228,7 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                         placeholder="e.g., Lisinopril 10mg, Metformin 500mg"
                         {...register(`prescription.${index}.medicine` as const, {
                           required: "medicine is required or delete this field",
-                          minLength: {value: 3, message: "Medicine must be at least 3 characters"}
+                          minLength: { value: 3, message: "Medicine must be at least 3 characters" }
                         })}
                         className={errors.prescription?.[index]?.medicine ? "border-destructive" : ""}
                       />
@@ -248,7 +248,7 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                         rows={3}
                         {...register(`prescription.${index}.dose` as const, {
                           required: "Give the patient dosage instructions for this medication.",
-                          minLength: {value: 5, message: "Dosage instructions must be at least 5 characters"}
+                          minLength: { value: 5, message: "Dosage instructions must be at least 5 characters" }
                         })}
                         className={errors.prescription?.[index]?.dose ? "border-destructive" : ""}
                       />
@@ -266,11 +266,11 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                 type="button"
                 variant="outline"
                 onClick={addMedicine}
-                disabled={(!watch("prescription")[fields.length-1]?.medicine?.trim() || !watch("prescription")[fields.length-1]?.dose?.trim()) && fields.length != 0}
+                disabled={(!watch("prescription")[fields.length - 1]?.medicine?.trim() || !watch("prescription")[fields.length - 1]?.dose?.trim()) && fields.length != 0}
                 className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400 bg-transparent"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                {fields.length == 0 ? "Add Medicine": "Add Another Medicine"}
+                {fields.length == 0 ? "Add Medicine" : "Add Another Medicine"}
               </Button>
             </div>
           </div>
@@ -285,34 +285,34 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
             <div className="space-y-2">
               <Label htmlFor="followUpDate">Follow-up Date (Optional)</Label>
               <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !watch("followUpDate") && "text-muted-foreground",
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {watch("followUpDate")
-                        ? formatDate(watch("followUpDate") as Date)
-                        : appointment.date  ? formatDate(appointment?.followUpDate as Date) : "Pick a follow-up Date"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={watch("followUpDate") ? watch("followUpDate") : undefined}
-                        onSelect={(date) => {setValue("followUpDate", date, { shouldValidate: true })}}
-                        // disabled={(date) => date < new Date() || !appointment.doctor.shift.days.includes(+date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6)}
-                        disabled={(date) => date < new Date() || !doctor.shift.days.includes(+date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6)}
-                         classNames={{
-                          day_disabled: "opacity-40 cursor-not-allowed",
-                          day_selected: "bg-primary text-white hover:bg-primary",
-                        }}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !watch("followUpDate") && "text-muted-foreground",
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {watch("followUpDate")
+                      ? formatDate(watch("followUpDate") as Date)
+                      : appointment.date ? formatDate(appointment?.followUpDate as Date) : "Pick a follow-up Date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={watch("followUpDate") ? watch("followUpDate") : undefined}
+                    onSelect={(date) => { setValue("followUpDate", date, { shouldValidate: true }) }}
+                    // disabled={(date) => date < new Date() || !appointment.doctor.shift.days.includes(+date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6)}
+                    disabled={(date) => date < new Date() || !doctor.shift.days.includes(+date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6)}
+                    classNames={{
+                      day_disabled: "opacity-40 cursor-not-allowed",
+                      day_selected: "bg-primary text-white hover:bg-primary",
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
               {errors.followUpDate && <p className="text-sm text-destructive">{errors.followUpDate.message as string}</p>}
             </div>
           </div>

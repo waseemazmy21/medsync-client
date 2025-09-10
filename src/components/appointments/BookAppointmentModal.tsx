@@ -1,23 +1,20 @@
 "use client"
 
-import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-// import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 // import { useToast } from "@/hooks/use-toast"
 import { CalendarIcon, Clock, User, FileText, CheckCircle } from "lucide-react"
 // import { format } from "date-fns"
 import { cn, formatDate, handleError } from "@/lib/utils"
-import { BookAppointment, Department } from "@/lib/types"
+import { Appointment, BookAppointment, Department } from "@/lib/types"
 import { bookAppointment } from "@/services/appointmentServices"
-import { Calendar } from "../ui/calendar"
-import { toast } from "sonner"
+// import { Calendar } from "../ui/calendar"
+import { useAppointments } from "@/hooks/useAppointments"
 
 
 interface BookAppointmentModalProps {
@@ -27,7 +24,7 @@ interface BookAppointmentModalProps {
 }
 
 export function BookAppointmentModal({ department, open, onClose }: BookAppointmentModalProps) {
-  const queryClient = useQueryClient()
+  const {bookAppointment} = useAppointments()
 
   const {
     register,
@@ -50,24 +47,11 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
   console.log("BookAppointmentModal day", watch("date")?.getDay());
 
   // Book appointment mutation
-  const bookAppointmentMutation = useMutation({
-    mutationFn: async (data: BookAppointment) => {
-      const response = await bookAppointment(data)
-      return response.data
-    },
-    onSuccess: (data) => {
-      toast.success("Appointment booked successfully")
-      queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
-      handleClose()
-    },
-    onError: (error: any) => {
-      toast.error(handleError(error))
-    },
-  })
+  
 
-  const onSubmit = (data: BookAppointment) => {
+  const onSubmit = (data: Appointment) => {
     if (!data.date) return
-    bookAppointmentMutation.mutate(data)
+    bookAppointment.mutate(data)
   }
 
   const handleClose = () => {
@@ -157,8 +141,8 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
               </div>
             </div>
           )}
-          <Button type="submit" disabled={bookAppointmentMutation.isPending} className="min-w-[120px] ">
-            {bookAppointmentMutation.isPending ? "Booking..." : "Confirm Booking"}
+          <Button type="submit" disabled={bookAppointment.isPending} className="min-w-[120px] ">
+            {bookAppointment.isPending ? "Booking..." : "Confirm Booking"}
           </Button>
         </form>
       </DialogContent>

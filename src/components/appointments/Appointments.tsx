@@ -124,11 +124,13 @@ export function Appointments() {
       </Tabs>
 
       {/* Update Appointment Modal */}
+      {selectedAppointment && 
       <UpdateAppointmentModal
         appointment={selectedAppointment}
         open={showUpdateModal}
         onOpenChange={setShowUpdateModal}
       />
+      }
 
       <PrespectionModel
         appointment={selectedAppointment}

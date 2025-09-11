@@ -10,8 +10,6 @@ const ProtectedLayout = ({
     children: React.ReactNode;
 }>) => {
     const { user, loading } = useAuth()
-    console.log("user", user);
-
     if (!loading && !user) {
         redirect('/login')
     }

@@ -27,7 +27,6 @@ export type registerData = {
 
 export const register = async (registerData: registerData) => {
 
-    console.log("registerData register", registerData);
     const { data } = await api.post('/auth/register', registerData)
     localStorage.setItem("token", data.data.accessToken);
     return data

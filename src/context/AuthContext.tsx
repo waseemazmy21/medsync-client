@@ -16,7 +16,7 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState< User | Doctor | null>(null);
+  const [user, setUser] = useState<User | Doctor | null>(null);
   const [hydrate, setHydrate] = useState(false);
   const [loading, setLoading] = useState(true);
 

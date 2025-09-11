@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import QueryProviders from "@/components/QueryProviders";
+import { NotificationsProvider } from "@/context/NotificationsContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -26,13 +27,16 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Header />
-      <main>
-        <QueryProviders>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryProviders>
-      </main>
+      <QueryProviders>
+        <NotificationsProvider>
+          <Header />
+          <main>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+          </main >
+        </NotificationsProvider >
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryProviders>
     </>
   );
 }

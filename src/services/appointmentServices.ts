@@ -5,11 +5,9 @@ export async function appointments(status: string){
     try {
         // const res = api.get("/appointment?status=upcoming&limit=3")
         const res = await api.get(`/appointment?status=${status}`)
-        console.log("res appointments",res);
         return res.data
         
     } catch (error) {
-        console.log("err appointments",error);
         throw new Error("field to fetch appointments")
     }
 }
@@ -19,11 +17,9 @@ export async function bookAppointment(bookingData: Appointment){
     try {
         // const res = api.get("/appointment?status=upcoming&limit=3")
         const res = await api.post("/appointment", bookingData)
-        console.log("res bookAppointment",res);
         return res.data
         
     } catch (error) {
-        console.log("err bookAppointment",error);
         throw new Error("field to bookAppointment")
     }
 }
@@ -32,11 +28,9 @@ export async function updateAppointment(appointmentID: string, updateData: Updat
     try {
         // const res = api.get("/appointment?status=upcoming&limit=3")
         const res = await api.patch(`/appointment/${appointmentID}`, updateData)
-        console.log("res bookAppointment",res); 
         return res.data
         
     } catch (error) {
-        console.log("err bookAppointment",error);
         throw new Error("field to bookAppointment")
     }
 }

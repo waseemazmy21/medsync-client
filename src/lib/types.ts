@@ -29,7 +29,7 @@ export enum BloodType {
 }
 
 
-export type User = {
+export interface User {
   _id: string;
   name: string;
   email: string;
@@ -41,11 +41,12 @@ export type User = {
   allergies: string[];
 };
 
-export type Doctor = User & {
+export interface Doctor extends User {
   department: Department;
   specialization: string;
   specializationAr: string;
   shift: Shift;
+  departmentManager: boolean;
 };
 
 
@@ -103,4 +104,22 @@ export type ReviewData = {
   doctor: string;
   appointment: string;
   department: string;
+}
+
+export type Notification = {
+  _id: string;
+  title: string;
+  message?: string;
+  read: boolean;
+  hidden?: boolean;
+  createdAt: Date;
+}
+
+export interface NotificationsResponse {
+  notifications: Notification[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  unreadCount: number;
 }

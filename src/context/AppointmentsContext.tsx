@@ -32,41 +32,39 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
     queryKey: ["completedAppointments"],
     queryFn: async () => {
       const { data } = await appointments("completed")
-      console.log("Response DashboardPage completed", data.appointments);
 
       return data.appointments || []
     }
   })
 
   const bookAppointment = useMutation({
-      mutationFn: async (data: Appointment) => {
-        const response = await bookAppointmentApi(data)
-        return response
-      },
-      onSuccess: (data) => {
-        toast.success(data.message || "Appointment booked successfully")
-        console.log("Booked",data);
-        
-        queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
-      },
-      onError: (error: any) => {
-        toast.error(handleError(error))
-      },
-    })
+    mutationFn: async (data: Appointment) => {
+      const response = await bookAppointmentApi(data)
+      return response
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Appointment booked successfully")
+
+      queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
+    },
+    onError: (error: any) => {
+      toast.error(handleError(error))
+    },
+  })
 
   const updateAppointment = useMutation({
-      mutationFn: async ({data,appointmentID}: UpdateAppointmentVariables) => {
-        const response = await updateAppointmentApi(appointmentID, data)
-        return response
-      },
-      onSuccess: (data: any) => {
-        toast.success(data.message)
-        queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
-      },
-      onError: (error: any) => {
-        toast.success(handleError(error));
-      },
-    })
+    mutationFn: async ({ data, appointmentID }: UpdateAppointmentVariables) => {
+      const response = await updateAppointmentApi(appointmentID, data)
+      return response
+    },
+    onSuccess: (data: any) => {
+      toast.success(data.message)
+      queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
+    },
+    onError: (error: any) => {
+      toast.success(handleError(error));
+    },
+  })
 
   const contextValue = { scheduledAppointments, completedAppointments, bookAppointment, updateAppointment }
 

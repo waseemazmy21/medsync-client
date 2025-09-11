@@ -6,7 +6,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Calendar, Clock, User, Building2, Plus, ArrowRight, Activity, FileText } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import Link from "next/link"
-import { useMemo } from "react"
 import { departments } from "@/services/departmentServices"
 import { Appointment } from "@/lib/types"
 import HeadSection from "@/components/HeadSection"
@@ -17,23 +16,21 @@ import { formatDate, getStatusColor } from "@/lib/utils"
 
 
 export default function PatientDashboard() {
-  const {user} = useAuth()
+  const { user } = useAuth()
   // const { scheduledAppointments, completedAppointments} = useAppointments()
-  const { 
-    scheduledAppointments:{data:scheduledApp = [], isPending: scheduledLoading}, 
-    completedAppointments:{data:completedApp = [], isPending: completedLoading}, 
-    todayAppointments} = useAppointments()
+  const {
+    scheduledAppointments: { data: scheduledApp = [], isPending: scheduledLoading },
+    completedAppointments: { data: completedApp = [], isPending: completedLoading },
+  } = useAppointments()
 
   const {
-    data: Departments= [],
+    data: Departments = [],
     isLoading: departmentsLoading,
     error: departmentsError,
   } = useQuery({
     queryKey: ["departments"],
     queryFn: async () => {
-      const {data} = await departments()
-      console.log("Response DashboardPage departments",data.departments);
-      
+      const { data } = await departments()
       return data.departments || []
     },
   })
@@ -176,12 +173,12 @@ export default function PatientDashboard() {
               </CardTitle>
               <CardDescription>Your past appointments</CardDescription>
             </div>
-            { completedApp.length > 3 && <Link href="/dashboard/appointments">
+            {completedApp.length > 3 && <Link href="/dashboard/appointments">
               <Button variant="outline" size="sm">
                 View All
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
-            </Link> }
+            </Link>}
           </CardHeader>
           <CardContent className="space-y-4">
             {completedLoading ? (
@@ -197,7 +194,7 @@ export default function PatientDashboard() {
                 ))}
               </div>
             ) : completedApp.length > 0 ? (
-              completedApp.slice(0,3).map((appointment: Appointment) => (
+              completedApp.slice(0, 3).map((appointment: Appointment) => (
                 <div key={appointment._id} className="p-4 bg-gray-50 rounded-lg  dark:bg-accent">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-4">

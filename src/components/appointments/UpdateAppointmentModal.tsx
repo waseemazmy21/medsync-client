@@ -180,7 +180,7 @@
 //           {/* Hidden appointment ID */}
 //           {/* <input type="hidden" {...register("appointmentId")} value={appointment._id} /> */}
 //           <div className="space-y-2">
-//             <Label htmlFor="status">Appointment Status</Label>
+//             <Label htmlFor="status">{t('appointments.status')}</Label>
 //             <Select
 //               defaultValue={appointment.status}
 //               onValueChange={(value) =>
@@ -202,14 +202,14 @@
 //           <div className="space-y-4">
 //             <div className="flex items-center gap-2">
 //               <Pill className="h-5 w-5 text-green-600" />
-//               <h3 className="text-lg font-medium text-gray-900">Prescription</h3>
+//               <h3 className="text-lg font-medium text-gray-900">{t('appointments.prescription')}</h3>
 //             </div>
 
 //             <div className="space-y-4">
 //               {fields.map((field, index) => (
 //                 <div key={field.medicine} className="p-4 border border-gray-200 rounded-lg space-y-4">
 //                   <div className="flex items-center justify-between">
-//                     <h4 className="font-medium text-gray-900">Medicine {index + 1}</h4>
+//                     <h4 className="font-medium text-gray-900">{t('appointments.medicine')} {index + 1}</h4>
 //                     {/* {fields.length > 1 && ( */}
 //                     <Button
 //                       type="button"
@@ -355,6 +355,8 @@ import { Calendar } from "../ui/calendar"
 import { useAuth } from "@/hooks/useAuth"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { useAppointments } from "@/hooks/useAppointments"
+import { useTranslation } from "react-i18next"
+import { useLanguage } from "@/context/LanguageContext"
 
 
 
@@ -366,6 +368,8 @@ interface UpdateAppointmentModalProps {
 
 export function UpdateAppointmentModal({ appointment, open, onOpenChange }: UpdateAppointmentModalProps) {
   const {updateAppointment} = useAppointments()
+  const { t } = useTranslation()
+  const { language } = useLanguage()
 
   const { user } = useAuth()
   const doctor = user as Doctor
@@ -469,29 +473,29 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Pill className="h-5 w-5 text-primary" />
-            Update Appointment - {appointment?.patient?.name}
+            {t('appointments.updateAppointment')} - {appointment?.patient?.name}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Appointment Info */}
           <div className="p-4 bg-gray-50 rounded-lg">
-            <h4 className="font-medium text-gray-900 mb-2">Appointment Information</h4>
+            <h4 className="font-medium text-gray-900 mb-2">{t('appointments.appointmentDetails')}</h4>
             <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
               <p>
-                <strong>Patient:</strong> {appointment?.patient?.name}
+                <strong>{t('appointments.patient')}:</strong> {appointment?.patient?.name}
               </p>
               <p>
-                <strong>Department:</strong> {appointment?.department?.name}
+                <strong>{t('appointments.department')}:</strong> {language === 'ar' && appointment?.department?.nameAr ? appointment?.department?.nameAr : appointment?.department?.name}
               </p>
               <p>
-                <strong>Date:</strong> {formatDate(appointment.date)}
+                <strong>{t('appointments.date')}:</strong> {formatDate(appointment.date)}
               </p>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="status">Appointment Status</Label>
+            <Label htmlFor="status">{t('appointments.status')}</Label>
             <Select
               defaultValue={appointment.status}
               onValueChange={(value) =>
@@ -513,12 +517,12 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
               })}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select status" />
+                <SelectValue placeholder={t('appointments.selectStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="scheduled">{t('appointments.scheduled')}</SelectItem>
+                <SelectItem value="completed">{t('appointments.completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('appointments.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
             {errors.status && <p className="text-sm text-destructive">{errors.status.message}</p>}
@@ -527,14 +531,14 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Pill className="h-5 w-5 text-green-600" />
-              <h3 className="text-lg font-medium text-gray-900">Prescription</h3>
+              <h3 className="text-lg font-medium text-gray-900">{t('appointments.prescription')}</h3>
             </div>
 
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <div key={field.medicine} className="p-4 border border-gray-200 rounded-lg space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-gray-900">Medicine {index + 1}</h4>
+                    <h4 className="font-medium text-gray-900">{t('appointments.medicine')} {index + 1}</h4>
                     {/* {fields.length > 1 && ( */}
                     <Button
                       type="button"
@@ -550,10 +554,10 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
 
                   <div className="grid grid-cols-1 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor={`medicine-${index}`}>Medicine Name</Label>
+                      <Label htmlFor={`medicine-${index}`}>{t('appointments.medicineName')}</Label>
                       <Input
                         id={`medicine-${index}`}
-                        placeholder="e.g., Lisinopril 10mg, Metformin 500mg"
+                        placeholder={t('appointments.medicinePlaceholder')}
                         {...register(`prescription.${index}.medicine` as const, {
                           required: "medicine is required or delete this field",
                           minLength: { value: 3, message: "Medicine must be at least 3 characters" }
@@ -568,11 +572,11 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor={`dose-${index}`}>Dosage Instructions</Label>
+                      <Label htmlFor={`dose-${index}`}>{t('appointments.dosageInstructions')}</Label>
                       <Textarea
                         id={`dose-${index}`}
                         // value={field.dose}
-                        placeholder="e.g., Take 1 tablet once daily in the morning with food"
+                        placeholder={t('appointments.dosagePlaceholder')}
                         rows={3}
                         {...register(`prescription.${index}.dose` as const, {
                           required: "Give the patient dosage instructions for this medication.",
@@ -598,7 +602,7 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                 className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400 bg-transparent"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                {fields.length == 0 ? "Add Medicine" : "Add Another Medicine"}
+                {fields.length == 0 ? t('appointments.addMedicine') : t('appointments.addAnotherMedicine')}
               </Button>
             </div>
           </div>
@@ -607,11 +611,11 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5 text-blue-600" />
-              <h3 className="text-lg font-medium text-gray-900">Follow-up Appointment</h3>
+              <h3 className="text-lg font-medium text-gray-900">{t('appointments.followUpAppointment')}</h3>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="followUpDate">Follow-up Date (Optional)</Label>
+              <Label htmlFor="followUpDate">{t('appointments.followUpDateOptional')}</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -624,7 +628,7 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {watch("followUpDate")
                       ? formatDate(watch("followUpDate") as Date)
-                      : appointment.date ? formatDate(appointment?.followUpDate as Date) : "Pick a follow-up Date"}
+                      : appointment.date ? formatDate(appointment?.followUpDate as Date) : t('appointments.pickFollowUpDate')}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -649,10 +653,10 @@ export function UpdateAppointmentModal({ appointment, open, onOpenChange }: Upda
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button type="button" variant="outline" onClick={handleClose} className="flex-1 bg-transparent">
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={isSubmitting || updateAppointment.isPending || !hasChanges} className="flex-1">
-              {isSubmitting || updateAppointment.isPending ? "Updating..." : "Update Appointment"}
+              {isSubmitting || updateAppointment.isPending ? t('appointments.updating') : t('appointments.updateAppointment')}
             </Button>
           </div>
         </form>

@@ -13,12 +13,16 @@ import { departments } from "@/services/departmentServices"
 import { BookAppointmentModal } from "../appointments/BookAppointmentModal"
 import { getDayName } from "@/lib/utils"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
+import { useLanguage } from "@/context/LanguageContext"
 
 
 export function DepartmentsGrid() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null)
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const { t } = useTranslation()
+  const { language } = useLanguage()
 
   // Fetch departments
   const {
@@ -38,8 +42,9 @@ export function DepartmentsGrid() {
   const filteredDepartments = Departments.filter(
     (dept: Department) =>
       dept.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      dept.nameAr.includes(searchTerm) ||
-      dept.description.toLowerCase().includes(searchTerm.toLowerCase()),
+      (dept.nameAr && dept.nameAr.includes(searchTerm)) ||
+      dept.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (dept.descriptionAr && dept.descriptionAr.includes(searchTerm)),
   )
 
   const handleBookAppointment = (department: Department) => {
@@ -52,13 +57,13 @@ export function DepartmentsGrid() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Medical Departments</h1>
-          <p className="text-gray-600">Choose a department to book your appointment</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('departments.title')}</h1>
+          <p className="text-gray-600">{t('departments.chooseToBook')}</p>
         </div>
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Search departments..."
+            placeholder={t('departments.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -93,8 +98,9 @@ export function DepartmentsGrid() {
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <CardTitle className="text-xl mb-2 text-gray-900">{department.name}</CardTitle>
-                    {/* <p className="text-sm text-gray-600 font-medium">{department.nameAr}</p> */}
+                    <CardTitle className="text-xl mb-2 text-gray-900">
+                      {language === 'ar' && department.nameAr ? department.nameAr : department.name}
+                    </CardTitle>
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <Building2 className="h-6 w-6 text-primary" />
@@ -108,7 +114,7 @@ export function DepartmentsGrid() {
                 </div>
 
                 <CardDescription className="text-sm leading-relaxed text-gray-700 mb-4">
-                  {department.description}
+                  {language === 'ar' && department.descriptionAr ? department.descriptionAr : department.description}
                 </CardDescription>
 
                 <div className="grid grid-cols-2 gap-4 mb-4">
@@ -137,13 +143,13 @@ export function DepartmentsGrid() {
                         d="M17 20h5v-2a3 3 0 00-5.196-2.196M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.196-2.196M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span>{department.staffCount || 0} Staff</span>
+                    <span>{department.staffCount || 0} {t('departments.staff')}</span>
                   </div>
                 </div>
 
                 {department.availableDays && department.availableDays.length > 0 && (
                   <div className="mb-4">
-                    <p className="text-xs text-gray-500 mb-2">Available Days:</p>
+                    <p className="text-xs text-gray-500 mb-2">{t('departments.availableDays')}:</p>
                     <div className="flex flex-wrap gap-1">
                       {department.availableDays.map((day, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
@@ -158,13 +164,13 @@ export function DepartmentsGrid() {
               <CardContent className="pt-0">
                 <Button onClick={() => {
                   if (department.availableDays.length === 0) {
-                    toast.info("Booking not available for this department yet.")
+                    toast.info(t('departments.bookingNotAvailable'))
                     return
                   }
                   handleBookAppointment(department)
                 }} className="w-full" size="lg">
                   <Calendar className="h-4 w-4 mr-2" />
-                  Book Appointment
+                  {t('departments.bookAppointment')}
                 </Button>
               </CardContent>
             </Card>
@@ -173,8 +179,8 @@ export function DepartmentsGrid() {
       ) : (
         <div className="text-center py-12">
           <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No departments found</h3>
-          <p className="text-gray-600">Try adjusting your search terms</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('departments.noDepartmentsFound')}</h3>
+          <p className="text-gray-600">{t('departments.adjustSearchTerms')}</p>
         </div>
       )}
 

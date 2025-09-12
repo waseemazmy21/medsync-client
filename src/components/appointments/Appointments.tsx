@@ -16,6 +16,8 @@ import { appointments } from "@/services/appointmentServices"
 import { useQuery } from "@tanstack/react-query"
 import PrespectionModel from "./PrespectionModel"
 import { ReviewModal } from "./ReviewModel"
+import { useTranslation } from "react-i18next"
+import { useLanguage } from "@/context/LanguageContext"
 
 
 export function Appointments() {
@@ -23,6 +25,8 @@ export function Appointments() {
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
   const [showReviewModal, setShowReviewModal] = useState(false)
+  const { t } = useTranslation()
+  const { language } = useLanguage()
 
   const { user } = useAuth()
   const {
@@ -51,21 +55,21 @@ export function Appointments() {
   return (
     <div className="space-y-6">
       <HeadSection>
-        <h1 className="text-2xl font-bold">My Appointments</h1>
+        <h1 className="text-2xl font-bold">{t('appointments.title')}</h1>
         <p className="text-gray-100">
-          {isDoctor && "Manage your patients appointments and medical records"}
-          {isPatient && "Your appointments and medical records"}
+          {isDoctor && t('appointments.doctorDescription')}
+          {isPatient && t('appointments.patientDescription')}
         </p>
       </HeadSection>
       <Tabs defaultValue="upcoming" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="upcoming" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            Upcoming Appointments ({scheduledApp.length})
+            {t('appointments.upcomingAppointments')} ({scheduledApp.length})
           </TabsTrigger>
           <TabsTrigger value="completed" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            Completed ({completedApp.length})
+            {t('appointments.completed')} ({completedApp.length})
           </TabsTrigger>
         </TabsList>
 
@@ -84,14 +88,14 @@ export function Appointments() {
             <Card>
               <CardContent className="text-center py-12">
                 <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No upcoming appointments</h3>
-                {isDoctor && <p className="text-gray-600 mb-4">Schedule appointments with your patients</p>}
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('appointments.noUpcomingAppointments')}</h3>
+                {isDoctor && <p className="text-gray-600 mb-4">{t('appointments.doctorScheduleMessage')}</p>}
                 {isPatient && <>
-                  <p className="text-gray-600 mb-4">Schedule your next appointment with one of our specialists</p>
+                  <p className="text-gray-600 mb-4">{t('appointments.patientScheduleMessage')}</p>
                   <Link href="/departments">
                     <Button>
                       <Plus className="h-4 w-4 mr-2" />
-                      Book Appointment
+                      {t('appointments.bookAppointment')}
                     </Button>
                   </Link>
                 </>}
@@ -115,8 +119,8 @@ export function Appointments() {
             <Card>
               <CardContent className="text-center py-12">
                 <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No completed appointments</h3>
-                <p className="text-gray-600">Completed appointments will appear here</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('appointments.noCompletedAppointments')}</h3>
+                <p className="text-gray-600">{t('appointments.completedAppointmentsMessage')}</p>
               </CardContent>
             </Card>
           )}

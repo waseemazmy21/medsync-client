@@ -7,30 +7,32 @@ import { Bell, Clock, User, Calendar, Check, Trash2, X } from "lucide-react"
 import { useNotifications } from "@/context/NotificationsContext"
 import { Notification } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
+import { useTranslation } from "react-i18next"
 
 
 
 export default function NotificationsPage() {
 
     const { notifications, total, markAsRead, hide, hideAll, markAllAsRead, unreadCount } = useNotifications()
+    const { t } = useTranslation()
 
     return (
         <div className="container space-y-6 mx-auto py-12">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">{t('notifications.title')}</h1>
                     <p className="text-gray-600 mt-1">
-                        {unreadCount > 0 ? `You have ${total} unread notifications` : "All caught up!"}
+                        {unreadCount > 0 ? t('notifications.unreadCount', { count: total }) : t('notifications.allCaughtUp')}
                     </p>
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={markAllAsRead} >
                         <Check className="h-4 w-4 mr-2" />
-                        Mark All Read
+                        {t('notifications.markAllRead')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={hideAll} >
                         <Trash2 className="h-4 w-4 mr-2" />
-                        Clear All
+                        {t('notifications.clearAll')}
                     </Button>
                 </div>
             </div>
@@ -40,8 +42,8 @@ export default function NotificationsPage() {
                     <Card>
                         <CardContent className="p-8 text-center">
                             <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">No notifications</h3>
-                            <p className="text-gray-500">You're all caught up! Check back later for new notifications.</p>
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('notifications.noNotifications')}</h3>
+                            <p className="text-gray-500">{t('notifications.checkBackLater')}</p>
                         </CardContent>
                     </Card>
                 ) : (

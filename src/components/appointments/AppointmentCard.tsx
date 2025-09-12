@@ -4,6 +4,8 @@ import { formatDate, getStatusColor } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Appointment } from "@/lib/types";
 import { Badge } from "../ui/badge";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/context/LanguageContext";
 
 
 const isTodayAppointment = (date: Date) => formatDate(date) == formatDate(new Date())
@@ -18,6 +20,8 @@ type Props = {
 
 export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleViewPrescription, handleReviewAppointment, isDoctor }: Props) => {
   console.log("prespection", appointment.prescription);
+  const { t } = useTranslation();
+  const { language } = useLanguage();
 
 
   return <Card className="hover:shadow-md transition-shadow">
@@ -31,7 +35,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
             <h3 className="font-semibold text-gray-900">{appointment.patient.name}</h3>
             <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
               <Building2 className="h-4 w-4" />
-              {appointment.department.name}
+              {language === 'ar' && appointment.department.nameAr ? appointment.department.nameAr : appointment.department.name}
             </div>
           </div>
         </div>
@@ -42,13 +46,13 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
         <Calendar className="h-4 w-4" />
         <p className="text-sm">{formatDate(appointment.date)}</p>
         {isTodayAppointment(appointment.date) &&
-          <Badge variant="secondary" className="text-xs">today</Badge>
+          <Badge variant="secondary" className="text-xs">{t('appointments.today')}</Badge>
         }
       </div>
       {appointment.notes && (
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <FileText className="h-4 w-4" />
-          <p className="text-sm"><span className="font-medium mb-2">Notes: </span>{appointment.notes}</p>
+          <p className="text-sm"><span className="font-medium mb-2">{t('appointments.notes')}: </span>{appointment.notes}</p>
         </div>
       )}
 
@@ -57,7 +61,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Pill className="h-4 w-4 text-green-600" />
-              <span className="text-sm font-medium text-green-900">Prescription Available</span>
+              <span className="text-sm font-medium text-green-900">{t('appointments.prescriptionAvailable')}</span>
             </div>
             <Button
               variant="outline"
@@ -66,7 +70,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
               className="text-green-700 border-green-300 hover:bg-green-100"
             >
               <Eye className="h-3 w-3 mr-1" />
-              View
+              {t('appointments.view')}
             </Button>
           </div>
         </div>
@@ -76,7 +80,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Star className="h-4 w-4 text-yellow-600" />
-              <span className="text-sm font-medium text-yellow-900">{appointment.review ? "Appointment Rating" : "Rate this appointment"}</span>
+              <span className="text-sm font-medium text-yellow-900">{appointment.review ? t('appointments.appointmentRating') : t('appointments.rateAppointment')}</span>
             </div>
             <Button
               variant="outline"
@@ -85,7 +89,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
               className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
             >
               <Star className="h-3 w-3 mr-1" />
-              {appointment.review ? "Show Review" : "Review"}
+              {appointment.review ? t('appointments.showReview') : t('appointments.review')}
             </Button>
           </div>
         </div>
@@ -94,13 +98,13 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
       {appointment.followUpDate && (
         <div className="mt-3 p-4 bg-orange-50 rounded-lg">
           <h4 className="flex items-center gap-2 font-medium text-orange-900 mb-2">
-            <Calendar className="h-4 w-4" /> Follow-up Appointment
+            <Calendar className="h-4 w-4" /> {t('appointments.followUpAppointment')}
             {isTodayAppointment(appointment.followUpDate) &&
-              <Badge variant="secondary" className="text-xs">today</Badge>
+              <Badge variant="secondary" className="text-xs">{t('appointments.today')}</Badge>
             }
           </h4>
           <p className="text-sm text-orange-800">
-            Scheduled for: {formatDate(appointment.followUpDate)}
+            {t('appointments.scheduledFor')}: {formatDate(appointment.followUpDate)}
           </p>
         </div>
       )}
@@ -108,7 +112,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
         <div className="flex gap-2 mt-4">
           <Button variant="default" size="sm" onClick={() => handleUpdateAppointment(appointment)} className="flex-1">
             <Edit className="h-3 w-3 mr-1" />
-            Update
+            {t('appointments.update')}
           </Button>
         </div>
       )}

@@ -11,6 +11,7 @@ import { useAppointments } from "@/hooks/useAppointments"
 import { useAuth } from "@/hooks/useAuth"
 import { formatDate, getDayName, getStatusColor } from "@/lib/utils"
 import { Skeleton } from "../ui/skeleton"
+import { t } from "i18next"
 
 
 const formatTime = (time: string) => {
@@ -157,13 +158,13 @@ export default function DoctorDashboard() {
                       </div>
                     </div>
                   </div>
-                  <Badge className={getStatusColor("upcoming")}>upcoming</Badge>
+                  <Badge className={getStatusColor("upcoming")}>{t('dashboard.upcoming')}</Badge>
                 </div>
               ))
             ) : (
               <div className="text-center py-8">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400 mb-4">No appointments today</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">No appointments scheduled for today</p>
               </div>
             )
             }

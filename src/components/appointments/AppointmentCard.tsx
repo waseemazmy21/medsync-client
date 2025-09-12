@@ -44,7 +44,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
 
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
         <Calendar className="h-4 w-4" />
-        <p className="text-sm">{formatDate(appointment.date)}</p>
+        <p className="text-sm">{formatDate(appointment.date, language)}</p>
         {isTodayAppointment(appointment.date) &&
           <Badge variant="secondary" className="text-xs">{t('appointments.today')}</Badge>
         }
@@ -104,7 +104,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
             }
           </h4>
           <p className="text-sm text-orange-800">
-            {t('appointments.scheduledFor')}: {formatDate(appointment.followUpDate)}
+            {t('appointments.scheduledFor')}: {formatDate(appointment.followUpDate, language)}
           </p>
         </div>
       )}

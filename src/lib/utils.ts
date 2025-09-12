@@ -27,39 +27,63 @@ export const getDayName = (dayIndex: number, t?: any) => {
   return days[dayIndex]
 }
 
-export const formatDate = (dateString: Date) => {
-  return new Date(dateString).toLocaleDateString("en-GB", {
+// Localized date formatter. Default to en-GB to preserve existing behavior when lang not provided.
+export const formatDate = (dateString: Date, lang: string = "en-GB") => {
+  return new Date(dateString).toLocaleDateString(lang, {
     year: "numeric",
     weekday: "long",
     month: "numeric",
     day: "numeric",
-    timeZone: "UTC"
+    timeZone: "UTC",
   })
 }
 
-export function handleError(error: unknown): string {
+export function handleError(error: unknown, t?: any): string {
+  // If translation function is not provided, use default messages
+  const defaultT = (key: string) => {
+    const errorMessages: Record<string, string> = {
+      'errors.serverDown': 'Server is down Please try again later',
+      'errors.networkError': 'Network error: Please check your internet connection.',
+      'errors.serverError': 'Server is down, Please try again later.',
+      'errors.notFound': 'Not Found Error.',
+      'errors.unexpectedError': 'An unexpected error occurred.',
+      'errors.genericError': 'Something went wrong.'
+    };
+    return errorMessages[key] || key;
+  };
+
+  // Use provided translation function or fallback to default
+  const translate = t || defaultT;
+
   if (axios.isAxiosError(error)) {
     if (!error.response) {
-      return navigator.onLine ? "Server is down Please try again later" :
-        'Network error: Please check your internet connection.'
+      return navigator.onLine ? translate('errors.serverDown') :
+        translate('errors.networkError');
     }
 
-    const status = error.response.status
-    const data = error.response.data
+    const status = error.response.status;
+    const data = error.response.data;
     if (status === 500) {
-      return 'Server is down, Please try again later.'
+      return translate('errors.serverError');
     } else if (status === 404) {
-      return 'Not Found Error.'
+      return translate('errors.notFound');
     }
-    else if (data && typeof data === 'object' && 'message' in data) {
-      console.log(data)
-      return data.message;
+    else if (data && typeof data === 'object') {
+      // Prefer Arabic server message when current language is Arabic and messageAr exists
+      const currentLang = t?.i18n?.language;
+      if (currentLang === 'ar' && 'messageAr' in data && typeof (data as any).messageAr === 'string') {
+        return (data as any).messageAr as string;
+      }
+      if ('message' in data) {
+        console.log(data);
+        return (data as any).message as string; // Keep original API message
+      }
     }
 
-    return 'An unexpected error occurred.'
+    return translate('errors.unexpectedError');
   } else if (error instanceof Error) {
-    return error.message
+    return error.message;
   }
 
-  return 'Something went wrong.'
+  return translate('errors.genericError');
 }

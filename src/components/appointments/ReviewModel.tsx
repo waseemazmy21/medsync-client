@@ -45,7 +45,7 @@ export function ReviewModal({ appointment, open, onOpenChange }: ReviewModalProp
 
   const submitReviewMutation = useMutation({
     mutationFn: async (data: ReviewData) => {
-      
+
       const response = await addReview(data)
       return response.data
     },

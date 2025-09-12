@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { User, Mail, Phone, Lock, EyeOff, Eye } from "lucide-react";
 import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,20 @@ import { handleError } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
+import { BloodType, Gender } from "@/lib/types";
+
+type RegisterFormData = {
+
+  allergies?: string;
+  birthDate: Date;
+  email: string;
+  bloodType?: BloodType;
+  gender: Gender;
+  name: string;
+  password: string;
+  phone: string;
+  confirmPassword?: string;
+};
 
 export default function SignUp() {
   const router = useRouter();
@@ -25,12 +39,12 @@ export default function SignUp() {
     formState: { errors, isSubmitting },
     watch,
     reset
-  } = useForm();
+  } = useForm<RegisterFormData>();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     try {
       setServerError(null);
       delete data.confirmPassword;

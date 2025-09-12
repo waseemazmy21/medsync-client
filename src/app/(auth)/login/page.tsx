@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { Mail, Lock, EyeOff, Eye } from "lucide-react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
-import ResetPasswordModal from "@/components/ResetPasswordModal";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,7 +20,6 @@ export default function SignIn() {
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const [showReset, setShowReset] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const onSubmit = async (data: unknown) => {
@@ -34,7 +32,7 @@ export default function SignIn() {
     }
   };
 
-  const onError = (error: any) => {
+  const onError = (error: unknown) => {
     console.log(error);
   };
 
@@ -89,7 +87,7 @@ export default function SignIn() {
             {errors.password && <p className="text-red-500 text-sm">{errors.password.message as string}</p>}
           </div>
 
-          {/* Options */}
+          {/* Options
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-1 dark:text-gray-300">
               <input type="checkbox" className="w-4 h-4" /> {t('auth.rememberMe')}
@@ -101,7 +99,7 @@ export default function SignIn() {
             >
               {t('auth.forgotPassword')}
             </button>
-          </div>
+          </div> */}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? t('auth.signingIn') : t('auth.signIn')}
@@ -126,7 +124,6 @@ export default function SignIn() {
         </Link>
       </div>
 
-      {showReset && <ResetPasswordModal onClose={() => setShowReset(false)} />}
     </div>
   );
 }

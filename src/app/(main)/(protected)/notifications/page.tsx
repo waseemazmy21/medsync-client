@@ -78,7 +78,7 @@ export default function NotificationsPage() {
                                         <p className="text-gray-700 mt-2 leading-relaxed">{language === 'ar' && notification.messageAr ? notification.messageAr : notification.message}</p>
                                         <div className="flex items-center gap-1 mt-4">
                                             <Clock className="h-4 w-4 text-gray-400" />
-                                            <span className="text-sm text-gray-500">{formatDate(notification.createdAt as any, language)}</span>
+                                            <span className="text-sm text-gray-500">{formatDate(notification.createdAt, language)}</span>
                                         </div>
                                     </div>
                                     <div className="flex gap-2">

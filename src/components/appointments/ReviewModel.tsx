@@ -56,7 +56,7 @@ export function ReviewModal({ appointment, open, onOpenChange }: ReviewModalProp
       onOpenChange(false)
       reset()
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       toast.error(handleError(error, t))
     },
   })

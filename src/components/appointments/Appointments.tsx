@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,12 +12,10 @@ import { Appointment } from "@/lib/types"
 import { UpdateAppointmentModal } from "./UpdateAppointmentModal"
 import HeadSection from "../HeadSection"
 import { useAppointments } from "@/hooks/useAppointments"
-import { appointments } from "@/services/appointmentServices"
-import { useQuery } from "@tanstack/react-query"
 import PrespectionModel from "./PrespectionModel"
 import { ReviewModal } from "./ReviewModel"
 import { useTranslation } from "react-i18next"
-import { useLanguage } from "@/context/LanguageContext"
+// import { useLanguage } from "@/context/LanguageContext"
 
 
 export function Appointments() {
@@ -26,12 +24,12 @@ export function Appointments() {
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
   const [showReviewModal, setShowReviewModal] = useState(false)
   const { t } = useTranslation()
-  const { language } = useLanguage()
+  // const { language } = useLanguage()
 
   const { user } = useAuth()
   const {
-    scheduledAppointments: { data: scheduledApp = [], isPending: scheduledLoading },
-    completedAppointments: { data: completedApp = [], isPending: completedLoading },
+    scheduledAppointments: { data: scheduledApp = [] },
+    completedAppointments: { data: completedApp = [] },
   } = useAppointments()
 
   const isDoctor = user?.role === "Doctor"

@@ -28,6 +28,22 @@ export enum BloodType {
   O_NEG = 'O-',
 }
 
+export type loginData = {
+    email: string,
+    passowrd: string
+}
+
+
+export type registerData = {
+    name: string,
+    email: string,
+    phone: string,
+    passowrd: string,
+    gender: Gender,
+    birthDate: Date,
+    bloodType?: BloodType,
+    allergies?: string
+}
 
 export interface User {
   _id: string;
@@ -128,4 +144,16 @@ export interface NotificationsResponse {
   limit: number;
   totalPages: number;
   unreadCount: number;
+}
+
+export type Report = {
+  _id?: string;
+  from: string;
+  to: string;
+  overview: string
+  cons: string[];
+  pros: string[];
+  averageRating: number;
+  totalReviews: number;
+  createdAt: Date;
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Moon, Sun, Menu, X, Bell } from "lucide-react";
+// import { Moon, Sun, Menu, X, Bell } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Navigation from "./Navigation";
@@ -11,21 +12,21 @@ import LocaleSwitcher from "./Lang";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationIcon } from "./NotificationIcon";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "@/context/LanguageContext";
+// import { useLanguage } from "@/context/LanguageContext";
 
 
 export default function Header() {
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const { t } = useTranslation();
-  const { isRTL } = useLanguage();
+  // const { isRTL } = useLanguage();
 
   const { user, logout } = useAuth();
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  // const toggleDarkMode = () => {
+  //   setDarkMode(!darkMode);
+  //   document.documentElement.classList.toggle("dark");
+  // };
 
   return (
     <header className="bg-white dark:bg-gray-950 shadow-md">

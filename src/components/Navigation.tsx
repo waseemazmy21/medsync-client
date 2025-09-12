@@ -7,7 +7,7 @@ const navigationItems = [
   { labelKey: "navigation.dashboard", value: "dashboard" },
   { labelKey: "navigation.departments", value: "departments", notView: "Doctor" },
   { labelKey: "navigation.appointments", value: "appointments" },
-  // { labelKey: "navigation.reports", value: "report", notView: "Patient" },
+  // { labelKey: "navigation.reports", value: "reports", notView: "Patient" },
 ]
 
 type NavProps = {

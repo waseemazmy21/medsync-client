@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Bell, Clock, User, Calendar, Check, Trash2, X } from "lucide-react"
+import { Bell, Clock, Check, Trash2, X } from "lucide-react"
 import { useNotifications } from "@/context/NotificationsContext"
 import { Notification } from "@/lib/types"
 import { formatDate } from "@/lib/utils"

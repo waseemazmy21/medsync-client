@@ -24,7 +24,7 @@ export default function SignIn() {
   const [showReset, setShowReset] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: unknown) => {
     try {
       setServerError(null);
       await login(data);

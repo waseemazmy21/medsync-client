@@ -1,17 +1,3 @@
-// import { ProfileManagement } from "@/components/profile/profile-management"
-
-// export default function ProfilePage() {
-//   return (
-//       <div className="space-y-6">
-//         <div>
-//           <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-//           <p className="text-gray-600">Manage your personal information and account settings</p>
-//         </div>
-//         <ProfileManagement />
-//       </div>
-//   )
-// }
-
 "use client"
 
 import { useState } from "react"
@@ -22,18 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-// import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-// import { LoadingSpinner } from "@/components/ui/loading-spinner"
 import { User, Lock, Save, Edit3 } from "lucide-react"
-// import { useAuth } from "@/contexts/auth-context"
-// import { useToast } from "@/hooks/use-toast"
-// import { z } from "zod"
-// import { patientService } from "@/lib/services"
 import { Label } from "@/components/ui/label"
 import { updateUser, UserInfoUpdate } from "@/services/userServices"
-import { Gender, Doctor } from "@/lib/types"
+import { Gender, Doctor, User as userType } from "@/lib/types"
 import { useAuth } from "@/hooks/useAuth"
 import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+import { handleError } from "@/lib/utils"
 
 export default function ProfilePage() {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
@@ -60,61 +42,42 @@ export default function ProfilePage() {
 
   // Update profile mutation
   const updateProfileMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: unknown) => {
       const userInfo = {id: user?._id, role : user?.role} as UserInfoUpdate
       const res = await updateUser(userInfo, data)
-      setUser(res.data.user)
-      console.log("updateProfileMutation mutationFn",data);
-      
+      setUser(res.data.user)      
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       setIsEditingProfile(false)
-      console.log("Success",data);
       
       queryClient.invalidateQueries({ queryKey: ["user-profile"] })
-      // toast({
-      //   title: "Profile updated successfully",
-      //   description: "Your profile information has been saved.",
-      // })
+      toast.success("Your profile information has been saved.")
     },
     onError: (error: any) => {
-      console.log("Err",error);
-      
-      // toast({
-      //   title: "Update failed",
-      //   description: error.response?.data?.message || "Please try again later.",
-      //   variant: "destructive",
-      // })
+      toast.error( handleError(error) || "Please try again later.")
     },
   })
 
   // Change password mutation
   const changePasswordMutation = useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (data: unknown) => {
       console.log("changePasswordMutation mutationFn",data);
       
     },
     onSuccess: () => {
       passwordForm.reset()
-      // toast({
-      //   title: "Password changed successfully",
-      //   description: "Your password has been updated.",
-      // })
+      toast.success("Your password has been updated.")
     },
-    onError: (error: any) => {
-      // toast({
-      //   title: "Password change failed",
-      //   description: error.response?.data?.message || "Please try again later.",
-      //   variant: "destructive",
-      // })
+    onError: (error: unknown) => {
+      toast.error(handleError(error) || "Please try again later.")
     },
   })
 
-  const onProfileSubmit = (data: any) => {
+  const onProfileSubmit = (data: unknown) => {
     updateProfileMutation.mutate(data)
   }
 
-  const onPasswordSubmit = (data: any) => {
+  const onPasswordSubmit = (data: unknown) => {
     changePasswordMutation.mutate(data)
   }
 

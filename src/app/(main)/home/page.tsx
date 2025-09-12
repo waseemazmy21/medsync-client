@@ -5,11 +5,11 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Calendar, Heart, Shield, Users } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "@/context/LanguageContext";
+// import { useLanguage } from "@/context/LanguageContext";
 
 function Page() {
   const { t } = useTranslation();
-  const { isRTL } = useLanguage();
+  // const { isRTL } = useLanguage();
   
   return (
     <div className="min-h-screen bg-gray-50">

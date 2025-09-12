@@ -2,7 +2,7 @@
 
 import { AppointmentsProvider } from "@/context/AppointmentsContext";
 import { useAuth } from "@/hooks/useAuth";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const ProtectedLayout = ({
     children,
@@ -14,9 +14,11 @@ const ProtectedLayout = ({
         redirect('/login')
     }
     return (
-        <AppointmentsProvider>
-            {children}
-        </AppointmentsProvider>
+        <div className="container max-w-7xl mx-auto p-4 space-y-6">
+            <AppointmentsProvider>
+                {children}
+            </AppointmentsProvider>
+        </div>
     )
 }
 

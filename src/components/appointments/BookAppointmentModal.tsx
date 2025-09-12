@@ -7,13 +7,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-// import { useToast } from "@/hooks/use-toast"
-import { CalendarIcon, Clock, User, FileText, CheckCircle } from "lucide-react"
-// import { format } from "date-fns"
-import { cn, formatDate, handleError } from "@/lib/utils"
-import { Appointment, BookAppointment, Department } from "@/lib/types"
-import { bookAppointment } from "@/services/appointmentServices"
-// import { Calendar } from "../ui/calendar"
+import { CalendarIcon, Clock, FileText } from "lucide-react"
+import { cn, formatDate } from "@/lib/utils"
+import {  BookAppointment, Department } from "@/lib/types"
 import { useAppointments } from "@/hooks/useAppointments"
 import { useTranslation } from "react-i18next"
 import { useLanguage } from "@/context/LanguageContext"
@@ -46,12 +42,6 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
   })
 
   register("date", { required: "Please select a date" })
-
-  console.log("BookAppointmentModal day", department.availableDays);
-  console.log("BookAppointmentModal day", watch("date")?.getDay());
-
-  // Book appointment mutation
-  
 
   const onSubmit = (data: BookAppointment) => {
     if (!data.date) return

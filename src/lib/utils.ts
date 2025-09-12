@@ -33,7 +33,7 @@ export const formatDate = (dateString: Date) => {
     weekday: "long",
     month: "numeric",
     day: "numeric",
-    timeZone: "UTC"
+    timeZone: "UTC",
   })
 }
 

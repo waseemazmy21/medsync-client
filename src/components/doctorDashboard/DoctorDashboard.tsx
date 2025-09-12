@@ -26,7 +26,6 @@ export default function DoctorDashboard() {
   const { user } = useAuth()
   const {
     scheduledAppointments: { data: scheduledApp = [], isPending: scheduledLoading },
-    completedAppointments: { data: completedApp = [] },
   } = useAppointments()
 
 

@@ -28,7 +28,6 @@ export function DepartmentsGrid() {
   const {
     data: Departments = [],
     isLoading,
-    error,
   } = useQuery({
     queryKey: ["departments"],
     queryFn: async () => {

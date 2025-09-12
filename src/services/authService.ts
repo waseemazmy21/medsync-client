@@ -1,11 +1,7 @@
-import { BloodType, Gender } from "@/lib/types"
+import { BloodType, Gender, loginData, registerData } from "@/lib/types"
 import api from "./axios-instance"
-import { handleError } from "@/lib/utils"
 
-export type loginData = {
-    email: string,
-    passowrd: string
-}
+
 
 export const login = async (loginData: loginData) => {
     const { data } = await api.post('/auth/login', loginData)
@@ -13,17 +9,6 @@ export const login = async (loginData: loginData) => {
     return data
 }
 
-
-export type registerData = {
-    name: string,
-    email: string,
-    phone: string,
-    passowrd: string,
-    gender: Gender,
-    birthDate: Date,
-    bloodType?: BloodType,
-    allergies?: string
-}
 
 export const register = async (registerData: registerData) => {
 

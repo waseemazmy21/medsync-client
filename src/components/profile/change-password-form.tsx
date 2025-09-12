@@ -11,12 +11,15 @@ import { useToast } from "@/hooks/use-toast"
 import { Eye, EyeOff, Lock, Loader2, CheckCircle } from "lucide-react"
 import { changePasswordSchema, type ChangePasswordData } from "@/lib/schemas"
 import { api } from "@/lib/api"
+import { handleError } from "@/lib/utils"
+import { useTranslation } from "react-i18next"
 
 export function ChangePasswordForm() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { toast } = useToast()
+  const { t, i18n } = useTranslation()
 
   const {
     register,
@@ -38,19 +41,18 @@ export function ChangePasswordForm() {
       })
       return response.data
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       toast({
-        title: "Password Changed Successfully!",
-        description: data.message || "Your password has been updated.",
+        title: t('toast.success.passwordChanged'),
+        description: (i18n.language === 'ar' && data?.messageAr) ? data.messageAr : (data?.message || t('toast.success.passwordChangedDesc')),
         variant: "default",
       })
       reset()
     },
     onError: (error: any) => {
-      const errorMessage = error.response?.data?.message || "Failed to change password. Please try again."
       toast({
-        title: "Password Change Failed",
-        description: errorMessage,
+        title: t('toast.error.passwordChangeFailed'),
+        description: handleError(error, t),
         variant: "destructive",
       })
     },

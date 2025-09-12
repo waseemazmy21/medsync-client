@@ -319,6 +319,26 @@
     "serverError": "Server error. Please try again later.",
     "validationError": "Please check your input and try again."
   },
+  "toast": {
+    "success": {
+      "title": "Success",
+      "passwordChanged": "Password Changed Successfully!",
+      "passwordChangedDesc": "Your password has been updated.",
+      "appointmentBooked": "Appointment Booked Successfully",
+      "appointmentUpdated": "Appointment Updated Successfully"
+    },
+    "error": {
+      "title": "Error",
+      "passwordChangeFailed": "Password Change Failed",
+      "appointmentBookingFailed": "Appointment Booking Failed",
+      "appointmentUpdateFailed": "Appointment Update Failed",
+      "serverDown": "Server is down. Please try again later.",
+      "networkError": "Network error. Please check your internet connection.",
+      "notFound": "Not Found Error.",
+      "unexpectedError": "An unexpected error occurred.",
+      "somethingWentWrong": "Something went wrong."
+    }
+  },
   "validation": {
     "required": "This field is required",
     "email": "Please enter a valid email address",

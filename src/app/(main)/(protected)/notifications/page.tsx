@@ -7,6 +7,7 @@ import { useNotifications } from "@/context/NotificationsContext"
 import { Notification } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
 import { useTranslation } from "react-i18next"
+import { useLanguage } from "@/context/LanguageContext"
 
 
 
@@ -14,6 +15,7 @@ export default function NotificationsPage() {
 
     const { notifications, total, markAsRead, hide, hideAll, markAllAsRead, unreadCount } = useNotifications()
     const { t } = useTranslation()
+    const { language } = useLanguage()
 
     return (
         <div className="container space-y-6 mx-auto py-12">
@@ -56,12 +58,27 @@ export default function NotificationsPage() {
                                     <div className="flex-shrink-0 mt-1"><Bell /></div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-start justify-between">
-                                            <h3 className="text-lg font-semibold text-gray-900">{notification.title}</h3>
+                                            <h3 className="text-lg font-semibold text-gray-900">
+                                                {/* Prefer Arabic fields when available; fall back to keyword mapping or original title */}
+                                                {(() => {
+                                                    const title = notification.title || '';
+                                                    const localizedTitle = language === 'ar' && notification.titleAr ? notification.titleAr : '';
+                                                    if (localizedTitle) return localizedTitle;
+                                                    const tl = title.toLowerCase();
+                                                    if (tl.includes('appointment')) {
+                                                        if (tl.includes('new') || tl.includes('booked') || tl.includes('book')) return t('notifications.newAppointment');
+                                                        if (tl.includes('reminder')) return t('notifications.appointmentReminder');
+                                                        if (tl.includes('updated') || tl.includes('update')) return t('notifications.appointmentUpdated');
+                                                        if (tl.includes('cancelled') || tl.includes('canceled') || tl.includes('cancel')) return t('notifications.appointmentCancelled');
+                                                    }
+                                                    return title;
+                                                })()}
+                                            </h3>
                                         </div>
-                                        <p className="text-gray-700 mt-2 leading-relaxed">{notification.message}</p>
+                                        <p className="text-gray-700 mt-2 leading-relaxed">{language === 'ar' && notification.messageAr ? notification.messageAr : notification.message}</p>
                                         <div className="flex items-center gap-1 mt-4">
                                             <Clock className="h-4 w-4 text-gray-400" />
-                                            <span className="text-sm text-gray-500">{formatDate(notification.createdAt)}</span>
+                                            <span className="text-sm text-gray-500">{formatDate(notification.createdAt as any, language)}</span>
                                         </div>
                                     </div>
                                     <div className="flex gap-2">

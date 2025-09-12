@@ -328,6 +328,26 @@
     "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
     "validationError": "يرجى التحقق من إدخالك والمحاولة مرة أخرى."
   },
+  "toast": {
+    "success": {
+      "title": "نجاح",
+      "passwordChanged": "تم تغيير كلمة المرور بنجاح!",
+      "passwordChangedDesc": "تم تحديث كلمة المرور الخاصة بك.",
+      "appointmentBooked": "تم حجز الموعد بنجاح",
+      "appointmentUpdated": "تم تحديث الموعد بنجاح"
+    },
+    "error": {
+      "title": "خطأ",
+      "passwordChangeFailed": "فشل تغيير كلمة المرور",
+      "appointmentBookingFailed": "فشل حجز الموعد",
+      "appointmentUpdateFailed": "فشل تحديث الموعد",
+      "serverDown": "الخادم متوقف. يرجى المحاولة لاحقًا.",
+      "networkError": "خطأ في الشبكة. يرجى التحقق من اتصال الإنترنت الخاص بك.",
+      "notFound": "خطأ: لم يتم العثور على المورد.",
+      "unexpectedError": "حدث خطأ غير متوقع.",
+      "somethingWentWrong": "حدث خطأ ما."
+    }
+  },
   "validation": {
     "required": "هذا الحقل مطلوب",
     "email": "يرجى إدخال عنوان بريد إلكتروني صحيح",

@@ -4,6 +4,7 @@ import { appointments, bookAppointment as bookAppointmentApi, updateAppointment 
 import { useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { createContext, ReactNode } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type UpdateAppointmentVariables = { data: Appointment; appointmentID: string };
 
@@ -18,6 +19,7 @@ export const AppointmentsContext = createContext<AppointmentsContextType | undef
 
 export function AppointmentsProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
+  const { t, i18n } = useTranslation()
 
   const scheduledAppointments = useQuery({
     queryKey: ["scheduledAppointments"],
@@ -42,13 +44,15 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
       const response = await bookAppointmentApi(data)
       return response
     },
-    onSuccess: (data) => {
-      toast.success(data.message || "Appointment booked successfully")
+    onSuccess: (data: any) => {
+      const currentLang = i18n.language;
+      const msg = currentLang === 'ar' && data?.messageAr ? data.messageAr : (data?.message || t('toast.success.appointmentBooked'))
+      toast.success(msg)
 
       queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
     },
     onError: (error: any) => {
-      toast.error(handleError(error))
+      toast.error(handleError(error, t))
     },
   })
 
@@ -58,11 +62,14 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
       return response
     },
     onSuccess: (data: any) => {
-      toast.success(data.message)
+      const currentLang = i18n.language;
+      const msg = currentLang === 'ar' && data?.messageAr ? data.messageAr : (data?.message || t('toast.success.appointmentUpdated'))
+      toast.success(msg)
+
       queryClient.invalidateQueries({ queryKey: ["scheduledAppointments"] })
     },
     onError: (error: any) => {
-      toast.success(handleError(error));
+      toast.error(handleError(error, t));
     },
   })
 

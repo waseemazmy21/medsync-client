@@ -11,6 +11,7 @@ import { Appointment, ReviewData } from "@/lib/types"
 import { addReview } from "@/services/reviewServices"
 import { formatDate, handleError } from "@/lib/utils"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
 
 
 
@@ -24,6 +25,7 @@ interface ReviewModalProps {
 export function ReviewModal({ appointment, open, onOpenChange }: ReviewModalProps) {
   const [hoveredRating, setHoveredRating] = useState(0)
   const queryClient = useQueryClient()
+  const { t, i18n } = useTranslation()
 
   const {
     register,
@@ -47,14 +49,15 @@ export function ReviewModal({ appointment, open, onOpenChange }: ReviewModalProp
       const response = await addReview(data)
       return response.data
     },
-    onSuccess: () => {
-      toast.success("Thank you for your feedback!")
+    onSuccess: (data: any) => {
+      const msg = (i18n.language === 'ar' && data?.messageAr) ? data.messageAr : (data?.message || t('toast.success.title'))
+      toast.success(msg)
       queryClient.invalidateQueries({ queryKey: ["completedAppointments"] })
       onOpenChange(false)
       reset()
     },
     onError: (error: unknown) => {
-      toast.error(handleError(error))
+      toast.error(handleError(error, t))
     },
   })
 

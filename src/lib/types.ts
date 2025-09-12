@@ -117,15 +117,21 @@ export type ReviewData = {
   rating: number;
   feedback: string;
   patient: string;
+  patientAr?: string;
   doctor: string;
+  doctorAr?: string;
   appointment: string;
+  appointmentAr?: string;
   department: string;
+  departmentAr?: string;
 }
 
 export type Notification = {
   _id: string;
   title: string;
+  titleAr?: string;
   message?: string;
+  messageAr?: string;
   read: boolean;
   hidden?: boolean;
   createdAt: Date;

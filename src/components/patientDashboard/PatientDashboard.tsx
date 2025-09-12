@@ -20,7 +20,7 @@ import { useLanguage } from "@/context/LanguageContext"
 export default function PatientDashboard() {
   const { user } = useAuth()
   const { t } = useTranslation()
-  const { isRTL } = useLanguage()
+  const { isRTL, language } = useLanguage()
   
   // const { scheduledAppointments, completedAppointments} = useAppointments()
   const {
@@ -143,10 +143,10 @@ export default function PatientDashboard() {
                     </div>
                     <div>
                       <p className="font-medium text-gray-900 dark:text-gray-50">{appointment.doctor?.name}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-200">{appointment.department?.name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-200">{language === 'ar' && appointment.department?.nameAr ? appointment.department.nameAr : appointment.department?.name}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <Clock className="h-3 w-3 text-gray-400 dark:text-gray-300" />
-                        <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date)}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date, language)}</span>
                       </div>
                     </div>
                   </div>
@@ -207,11 +207,11 @@ export default function PatientDashboard() {
                         <User className="h-4 w-4 text-green-600" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-gray-50">{appointment.doctor?.name || "No doctor"}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{appointment.department?.name || "No department"}</p>
+                        <p className="font-medium text-gray-900 dark:text-gray-50">{appointment.doctor?.name || t('dashboard.noDoctor')}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{(language === 'ar' && appointment.department?.nameAr) ? appointment.department.nameAr : (appointment.department?.name || t('dashboard.noDepartment'))}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <Clock className="h-3 w-3 text-gray-400 dark:text-gray-300" />
-                          <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date)}</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-300">{formatDate(appointment.date, language)}</span>
                         </div>
                       </div>
                     </div>

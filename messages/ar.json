@@ -2,7 +2,7 @@
   "common": {
     "loading": "جاري التحميل...",
     "error": "خطأ",
-    "success": "نجح",
+    "success": "نجاح",
     "cancel": "إلغاء",
     "save": "حفظ",
     "edit": "تعديل",
@@ -21,7 +21,7 @@
     "refresh": "تحديث",
     "logout": "تسجيل الخروج",
     "login": "تسجيل الدخول",
-    "register": "إنشاء حساب",
+    "register": "تسجيل",
     "signUp": "إنشاء حساب",
     "signIn": "تسجيل الدخول",
     "getStarted": "ابدأ الآن",
@@ -36,7 +36,21 @@
     "status": "الحالة",
     "description": "الوصف",
     "required": "مطلوب",
-    "optional": "اختياري"
+    "optional": "اختياري",
+    "days": {
+      "0": "الأحد",
+      "1": "الإثنين",
+      "2": "الثلاثاء",
+      "3": "الأربعاء",
+      "4": "الخميس",
+      "5": "الجمعة",
+      "6": "السبت"
+    },
+    "appointmentStatus": {
+      "scheduled": "مجدول",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    }
   },
   "auth": {
     "title": "مرحباً بعودتك",
@@ -168,6 +182,7 @@
     "title": "المواعيد",
     "bookNew": "حجز موعد جديد",
     "upcoming": "قادمة",
+    "upcomingAppointments": "المواعيد القادمة",
     "past": "سابقة",
     "cancelled": "ملغاة",
     "pending": "في الانتظار",
@@ -187,6 +202,8 @@
     "noUpcomingAppointments": "لا توجد مواعيد قادمة",
     "doctorScheduleMessage": "جدولة المواعيد مع مرضاك",
     "patientScheduleMessage": "جدولة موعدك التالي مع أحد المتخصصين لدينا",
+    "doctorDescription": "إدارة مواعيد المرضى والجدول الزمني",
+    "patientDescription": "جدولة وإدارة مواعيدك الطبية",
     "bookAppointment": "حجز موعد",
     "noCompletedAppointments": "لا توجد مواعيد مكتملة",
     "completedAppointmentsMessage": "ستظهر المواعيد المكتملة هنا",
@@ -237,15 +254,32 @@
     "title": "الأقسام",
     "browseDepartments": "تصفح الأقسام الطبية",
     "findSpecialist": "اعثر على الاختصاصي المناسب لاحتياجاتك",
+    "chooseToBook": "اختر قسمًا لحجز موعد",
+    "searchPlaceholder": "البحث في الأقسام...",
     "cardiology": "أمراض القلب",
     "dermatology": "الأمراض الجلدية",
-    "neurology": "الأمراض العصبية",
+    "endocrinology": "الغدد الصماء",
+    "gastroenterology": "الجهاز الهضمي",
+    "neurology": "الأعصاب",
+    "obstetrics": "النساء والتوليد",
+    "oncology": "الأورام",
+    "ophthalmology": "العيون",
     "orthopedics": "العظام",
     "pediatrics": "طب الأطفال",
-    "generalMedicine": "الطب العام",
+    "psychiatry": "الطب النفسي",
+    "pulmonology": "الرئة",
+    "radiology": "الأشعة",
+    "urology": "المسالك البولية",
+    "staff": {
+      "1": "أطباء متخصصون",
+      "2": "ممرضات ذوات خبرة",
+      "3": "فنيون طبيون"
+    },
     "viewDoctors": "عرض الأطباء",
     "bookAppointment": "حجز موعد",
-    "noDepartments": "لا توجد أقسام متاحة"
+    "noDepartments": "لا توجد أقسام متاحة",
+    "availableDays": "الأيام المتاحة",
+    "bookingNotAvailable": "الحجز غير متاح لهذا القسم"
   },
   "profile": {
     "title": "الملف الشخصي",
@@ -262,13 +296,17 @@
   },
   "notifications": {
     "title": "الإشعارات",
+    "unreadCount": "لديك {{count}} إشعارات غير مقروءة",
+    "allCaughtUp": "أنت على اطلاع بكل شيء!",
     "noNotifications": "لا توجد إشعارات",
+    "checkBackLater": "أنت على اطلاع بكل شيء! تحقق لاحقًا من الإشعارات الجديدة.",
     "markAllRead": "تعيين الكل كمقروء",
     "clearAll": "مسح الكل",
     "newAppointment": "موعد جديد مجدول",
     "appointmentReminder": "تذكير بالموعد",
     "appointmentCancelled": "تم إلغاء الموعد",
-    "appointmentRescheduled": "تم إعادة جدولة الموعد"
+    "appointmentRescheduled": "تم إعادة جدولة الموعد",
+    "appointmentUpdated": "تم تحديث الموعد"
   },
   "reports": {
     "title": "التقارير",

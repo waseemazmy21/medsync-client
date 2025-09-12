@@ -150,7 +150,7 @@ export default function PatientDashboard() {
                       </div>
                     </div>
                   </div>
-                  <Badge className={getStatusColor("upcoming")}>upcoming</Badge>
+                  <Badge className={getStatusColor("upcoming")}>{t('dashboard.upcoming')}</Badge>
                 </div>
               ))
             ) : (
@@ -215,7 +215,7 @@ export default function PatientDashboard() {
                         </div>
                       </div>
                     </div>
-                    <Badge className={getStatusColor("completed")}>completed</Badge>
+                    <Badge className={getStatusColor("completed")}>{t('common.appointmentStatus.completed')}</Badge>
                   </div>
                 </div>
               ))

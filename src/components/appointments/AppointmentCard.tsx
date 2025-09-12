@@ -39,7 +39,7 @@ export const AppointmentCard = ({ appointment, handleUpdateAppointment, handleVi
             </div>
           </div>
         </div>
-        <Badge className={getStatusColor(appointment.status)}>{appointment.status}</Badge>
+        <Badge className={getStatusColor(appointment.status)}>{t(`common.appointmentStatus.${appointment.status}`)}</Badge>
       </div>
 
       <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">

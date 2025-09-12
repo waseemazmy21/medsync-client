@@ -36,7 +36,21 @@
     "status": "Status",
     "description": "Description",
     "required": "Required",
-    "optional": "Optional"
+    "optional": "Optional",
+    "days": {
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
+    },
+    "appointmentStatus": {
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
   },
   "auth": {
     "title": "Welcome Back",
@@ -147,6 +161,7 @@
     "title": "Appointments",
     "bookNew": "Book New Appointment",
     "upcoming": "Upcoming",
+    "upcomingAppointments": "Upcoming Appointments",
     "past": "Past",
     "cancelled": "Cancelled",
     "pending": "Pending",
@@ -166,6 +181,8 @@
     "noUpcomingAppointments": "No upcoming appointments",
     "doctorScheduleMessage": "Schedule appointments with your patients",
     "patientScheduleMessage": "Schedule your next appointment with one of our specialists",
+    "doctorDescription": "Manage your patient appointments and schedule",
+    "patientDescription": "Schedule and manage your medical appointments",
     "bookAppointment": "Book Appointment",
     "noCompletedAppointments": "No completed appointments",
     "completedAppointmentsMessage": "Completed appointments will appear here",
@@ -216,15 +233,33 @@
     "title": "Departments",
     "browseDepartments": "Browse Medical Departments",
     "findSpecialist": "Find the right specialist for your needs",
+    "chooseToBook": "Choose a department to book an appointment",
+    "searchPlaceholder": "Search departments...",
     "cardiology": "Cardiology",
     "dermatology": "Dermatology",
+    "endocrinology": "Endocrinology",
+    "gastroenterology": "Gastroenterology",
     "neurology": "Neurology",
+    "obstetrics": "Obstetrics & Gynecology",
+    "oncology": "Oncology",
+    "ophthalmology": "Ophthalmology",
     "orthopedics": "Orthopedics",
     "pediatrics": "Pediatrics",
+    "psychiatry": "Psychiatry",
+    "pulmonology": "Pulmonology",
+    "radiology": "Radiology",
+    "urology": "Urology",
     "generalMedicine": "General Medicine",
     "viewDoctors": "View Doctors",
     "bookAppointment": "Book Appointment",
-    "noDepartments": "No departments available"
+    "noDepartments": "No departments available",
+    "availableDays": "Available Days",
+    "bookingNotAvailable": "Booking is not available for this department",
+    "staff": {
+      "1": "Specialized physicians",
+      "2": "Experienced nurses",
+      "3": "Medical technicians"
+    }
   },
   "profile": {
     "title": "Profile",

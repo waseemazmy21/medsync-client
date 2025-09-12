@@ -19,7 +19,10 @@ export const getStatusColor = (status: string) => {
   }
 }
 
-export const getDayName = (dayIndex: number) => {
+export const getDayName = (dayIndex: number, t?: any) => {
+  if (t) {
+    return t(`common.days.${dayIndex}`)
+  }
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   return days[dayIndex]
 }

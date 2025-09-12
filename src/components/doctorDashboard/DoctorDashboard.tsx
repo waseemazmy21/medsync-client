@@ -164,7 +164,7 @@ export default function DoctorDashboard() {
             ) : (
               <div className="text-center py-8">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400 mb-4">No appointments scheduled for today</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">{t('dashboard.noAppointmentsToday')}</p>
               </div>
             )
             }

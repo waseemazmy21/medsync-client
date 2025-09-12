@@ -15,6 +15,8 @@ import { Appointment, BookAppointment, Department } from "@/lib/types"
 import { bookAppointment } from "@/services/appointmentServices"
 // import { Calendar } from "../ui/calendar"
 import { useAppointments } from "@/hooks/useAppointments"
+import { useTranslation } from "react-i18next"
+import { useLanguage } from "@/context/LanguageContext"
 
 
 interface BookAppointmentModalProps {
@@ -25,6 +27,8 @@ interface BookAppointmentModalProps {
 
 export function BookAppointmentModal({ department, open, onClose }: BookAppointmentModalProps) {
   const {bookAppointment} = useAppointments()
+  const { t } = useTranslation()
+  const { language } = useLanguage()
 
   const {
     register,
@@ -49,7 +53,7 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
   // Book appointment mutation
   
 
-  const onSubmit = (data: Appointment) => {
+  const onSubmit = (data: BookAppointment) => {
     if (!data.date) return
     bookAppointment.mutate(data)
   }
@@ -65,10 +69,10 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CalendarIcon className="h-5 w-5 text-primary" />
-            Book Appointment - {department.name}
+            {t('appointments.bookNew')} - {language === 'ar' && department.nameAr ? department.nameAr : department.name}
           </DialogTitle>
           <DialogDescription>
-            Follow the steps below to schedule your appointment with one of our specialists.
+            {t('appointments.bookingInstructions')}
           </DialogDescription>
         </DialogHeader>
 
@@ -76,10 +80,10 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Clock className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold">Select Date</h3>
+              <h3 className="text-lg font-semibold">{t('appointments.selectDate')}</h3>
             </div>
             <div>
-              <Label className="text-sm font-medium mb-2 block">Select Date</Label>
+              <Label className="text-sm font-medium mb-2 block">{t('appointments.selectDate')}</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -92,7 +96,7 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {watch("date")
                       ? formatDate(watch("date") as Date)
-                      : "Pick a date"}
+                      : t('appointments.pickDate')}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -112,13 +116,13 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <FileText className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold">Additional Notes</h3>
+              <h3 className="text-lg font-semibold">{t('appointments.additionalNotes')}</h3>
             </div>
             <div>
-              <Label htmlFor="notes">Notes (Optional)</Label>
+              <Label htmlFor="notes">{t('appointments.notesOptional')}</Label>
               <Textarea
                 id="notes"
-                placeholder="Any additional information or symptoms you'd like to share with the doctor..."
+                placeholder={t('appointments.notesPlaceholder')}
                 {...register("notes")}
                 className="mt-1"
                 rows={4}
@@ -127,22 +131,22 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
           </div>
           {watch("date") && (
             <div className="p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">Appointment Summary</h4>
+              <h4 className="font-medium text-blue-900 mb-2">{t('appointments.appointmentSummary')}</h4>
               <div className="space-y-1 text-sm text-blue-800">
                 <p>
-                  <strong>Department:</strong> {department.name}
+                  <strong>{t('appointments.department')}:</strong> {language === 'ar' && department.nameAr ? department.nameAr : department.name}
                 </p>
                 <p>
-                  <strong>Date:</strong> {formatDate(watch("date") as Date)}
+                  <strong>{t('appointments.date')}:</strong> {formatDate(watch("date") as Date)}
                 </p>
                 <p>
-                  <strong>Fee:</strong> {department.appointmentFee} EGP
+                  <strong>{t('appointments.fee')}:</strong> {department.appointmentFee} EGP
                 </p>
               </div>
             </div>
           )}
           <Button type="submit" disabled={bookAppointment.isPending} className="min-w-[120px] ">
-            {bookAppointment.isPending ? "Booking..." : "Confirm Booking"}
+            {bookAppointment.isPending ? t('appointments.booking') : t('appointments.confirmBooking')}
           </Button>
         </form>
       </DialogContent>

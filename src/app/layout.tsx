@@ -3,9 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { NotificationsProvider } from "@/context/NotificationsContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProviders from "@/components/QueryProviders";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import ClientProviders from "@/components/ClientProviders";
 
 
 const geistSans = Geist({
@@ -35,10 +37,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          {children}
-          <Toaster position="bottom-right" richColors />
-        </AuthProvider>
+        <ClientProviders>
+          <AuthProvider>
+            {children}
+            <Toaster position="bottom-right" richColors />
+          </AuthProvider>
+        </ClientProviders>
       </body>
     </html>
   );

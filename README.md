@@ -1,4 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MedSync - Healthcare Management System
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) that provides a comprehensive healthcare management system with full internationalization support.
+
+## Features
+
+- **Multi-language Support**: English and Arabic with RTL (Right-to-Left) support
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **User Authentication**: Secure login and registration system
+- **Appointment Management**: Book and manage medical appointments
+- **Department Directory**: Browse medical departments and specialists
+- **Dashboard**: Personalized dashboard for patients and doctors
+- **Real-time Notifications**: Stay updated with appointment reminders
+- **Dark Mode**: Toggle between light and dark themes
+
+## Internationalization (i18n)
+
+This project includes comprehensive localization support using `i18next` and `react-i18next`:
+
+### Supported Languages
+- **English (en)**: Default language with LTR (Left-to-Right) layout
+- **Arabic (ar)**: Full RTL support with proper text direction and layout adjustments
+
+### Language Features
+- **Automatic Detection**: Detects user's browser language preference
+- **Persistent Storage**: Remembers user's language choice in localStorage
+- **RTL Support**: Complete right-to-left layout support for Arabic
+- **Dynamic Switching**: Change language without page reload
+- **Fallback System**: Falls back to English if translation is missing
+
+### Adding New Languages
+
+To add a new language to the project:
+
+1. **Create Translation File**: Add a new JSON file in the `messages/` directory (e.g., `fr.json` for French)
+
+2. **Update i18n Configuration**: Modify `src/lib/i18n.ts` to include the new language:
+```typescript
+const resources = {
+  en: { translation: enTranslations },
+  ar: { translation: arTranslations },
+  fr: { translation: frTranslations }, // Add new language
+};
+```
+
+3. **Add Language Option**: Update the language switcher in `src/components/Lang.tsx` to include the new language option
+
+4. **RTL Support** (if needed): If the new language is RTL, add RTL-specific CSS classes in `src/app/globals.css`
+
+### Translation File Structure
+
+Translation files are organized in a hierarchical structure:
+
+```json
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save"
+  },
+  "auth": {
+    "title": "Welcome Back",
+    "signIn": "Sign In"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back, {{name}}!",
+    "upcomingAppointments": "Upcoming Appointments"
+  }
+}
+```
+
+### Using Translations in Components
+
+```tsx
+import { useTranslation } from 'react-i18next';
+
+function MyComponent() {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <h1>{t('common.title')}</h1>
+      <p>{t('dashboard.welcomeBack', { name: 'John' })}</p>
+    </div>
+  );
+}
+```
 
 ## Getting Started
 

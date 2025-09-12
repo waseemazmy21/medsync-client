@@ -10,10 +10,14 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { handleError } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SignUp() {
   const router = useRouter();
   const { register: createAccount } = useAuth();
+  const { t } = useTranslation();
+  const { isRTL } = useLanguage();
 
   const {
     register,
@@ -33,13 +37,12 @@ export default function SignUp() {
       if (!data.bloodType) {
         delete data.bloodType;
       }
-      const res = await createAccount({
+      await createAccount({
         ...data,
         allergies: data.allergies
           ? data.allergies.split(",").map((a: string) => a.trim())
           : undefined,
       });
-
 
       router.push("/dashboard");
       reset();
@@ -56,105 +59,105 @@ export default function SignUp() {
       <Logo />
 
       <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-center mb-1 flex items-center justify-center gap-2 dark:text-white">
-          <User className="w-5 h-5" /> Create Account
+        <h3 className={`text-lg font-semibold text-center mb-1 flex items-center justify-center gap-2 dark:text-white ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <User className="w-5 h-5" /> {t('auth.createAccount')}
         </h3>
         <p className="text-center text-gray-500 dark:text-gray-400 mb-4">
-          Join the MediCore healthcare platform
+          {t('auth.joinPlatform')}
         </p>
         {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
 
         <form method="POST" onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           {/* Full Name */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Full Name *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.fullName')} *</label>
             <input
               type="text"
               {...register("name", {
-                required: "Full name is required",
-                minLength: { value: 3, message: "Name must be at least 3 characters" },
-                maxLength: { value: 30, message: "Name must be at most 30 characters" },
+                required: t('auth.fullNameRequired'),
+                minLength: { value: 3, message: t('auth.nameMinLength') },
+                maxLength: { value: 30, message: t('auth.nameMaxLength') },
               })}
-              placeholder="Enter your full name"
-              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.name ? "border-red-500" : ""
+              placeholder={t('auth.fullNamePlaceholder')}
+              className={`w-full border rounded p-2 ${isRTL ? 'pr-8' : 'pl-8'} bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.name ? "border-red-500" : ""
                 }`}
             />
-            <User className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
+            <User className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-10 w-4 h-4 text-gray-400 dark:text-gray-200`} />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message as string}</p>}
           </div>
 
           {/* Email */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Email *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.emailLabel')} *</label>
             <input
               type="email"
               {...register("email", {
-                required: "Email is required",
-                pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
+                required: t('auth.emailRequired'),
+                pattern: { value: /^\S+@\S+$/i, message: t('auth.invalidEmail') },
               })}
-              placeholder="Enter email"
-              className="w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white"
+              placeholder={t('auth.emailPlaceholder')}
+              className={`w-full border rounded p-2 ${isRTL ? 'pr-8' : 'pl-8'} bg-gray-50 dark:bg-gray-600 dark:text-white`}
             />
-            <Mail className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
+            <Mail className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-10 w-4 h-4 text-gray-400 dark:text-gray-200`} />
             {errors.email && <p className="text-red-500 text-sm">{errors.email.message as string}</p>}
           </div>
 
           {/* Phone */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Phone *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.phone')} *</label>
             <input
               type="tel"
               {...register("phone", {
-                required: "Phone number is required",
+                required: t('auth.phoneRequired'),
                 pattern: {
                   value: /^01[0125][0-9]{8}$/,
-                  message: "Must be a valid Egyptian mobile number",
+                  message: t('auth.invalidPhone'),
                 },
               })}
-              placeholder="Enter phone number"
-              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.phone ? "border-red-500" : ""
+              placeholder={t('auth.phonePlaceholder')}
+              className={`w-full border rounded p-2 ${isRTL ? 'pr-8' : 'pl-8'} bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.phone ? "border-red-500" : ""
                 }`}
             />
-            <Phone className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
+            <Phone className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-10 w-4 h-4 text-gray-400 dark:text-gray-200`} />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message as string}</p>}
           </div>
 
           {/* Gender */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Gender *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.gender')} *</label>
             <select
               className={`w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.gender ? "border-red-500" : ""
                 }`}
-              {...register("gender", { required: "Gender is required" })}
+              {...register("gender", { required: t('auth.genderRequired') })}
             >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="">{t('auth.selectGender')}</option>
+              <option value="male">{t('auth.male')}</option>
+              <option value="female">{t('auth.female')}</option>
             </select>
             {errors.gender && <p className="text-red-500 text-sm">{errors.gender.message as string}</p>}
           </div>
 
           {/* Birth Date */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Birth Date *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.birthDate')} *</label>
             <input
               type="date"
               className={`w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.birthDate ? "border-red-500" : ""
                 }`}
-              {...register("birthDate", { required: "Birth date is required" })}
+              {...register("birthDate", { required: t('auth.birthDateRequired') })}
             />
             {errors.birthDate && <p className="text-red-500 text-sm">{errors.birthDate.message as string}</p>}
           </div>
 
           {/* Blood Type */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Blood Type</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.bloodType')}</label>
             <select
               className="w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white"
               {...register("bloodType")}
               defaultValue=""
             >
-              <option value="">Select Blood Type</option>
+              <option value="">{t('auth.selectBloodType')}</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
               <option value="B+">B+</option>
@@ -168,21 +171,21 @@ export default function SignUp() {
 
           {/* Password */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Password *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.passwordLabel')} *</label>
             <input
               type={showPassword ? "text" : "password"}
               {...register("password", {
-                required: "Password is required",
-                minLength: { value: 8, message: "Password must be at least 8 characters" }
+                required: t('auth.passwordRequired'),
+                minLength: { value: 8, message: t('auth.passwordMinLength') }
               })}
-              placeholder="Create password"
-              className={`w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.password ? "border-red-500" : ""
+              placeholder={t('auth.createPassword')}
+              className={`w-full border rounded p-2 ${isRTL ? 'pr-8' : 'pl-8'} bg-gray-50 dark:bg-gray-600 dark:text-white ${errors.password ? "border-red-500" : ""
                 }`}
             />
-            <Lock className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
+            <Lock className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-10 w-4 h-4 text-gray-400 dark:text-gray-200`} />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-10 cursor-pointer text-gray-500 dark:text-gray-300"
+              className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-10 cursor-pointer text-gray-500 dark:text-gray-300`}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
@@ -191,20 +194,20 @@ export default function SignUp() {
 
           {/* Confirm Password */}
           <div className="relative">
-            <label className="block mb-1 font-medium dark:text-gray-200">Confirm Password *</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.confirmPassword')} *</label>
             <Input
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirmPassword", {
-                required: "Please confirm your password",
-                validate: (value) => value === watch("password") || "Passwords do not match"
+                required: t('auth.confirmPasswordRequired'),
+                validate: (value) => value === watch("password") || t('auth.passwordsNotMatch')
               })}
-              placeholder="Confirm password"
-              className="w-full border rounded p-2 pl-8 bg-gray-50 dark:bg-gray-600 dark:text-white"
+              placeholder={t('auth.confirmPasswordPlaceholder')}
+              className={`w-full border rounded p-2 ${isRTL ? 'pr-8' : 'pl-8'} bg-gray-50 dark:bg-gray-600 dark:text-white`}
             />
-            <Lock className="absolute left-2 top-10 w-4 h-4 text-gray-400 dark:text-gray-200" />
+            <Lock className={`absolute ${isRTL ? 'right-2' : 'left-2'} top-10 w-4 h-4 text-gray-400 dark:text-gray-200`} />
             <span
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-2 top-10 cursor-pointer text-gray-500 dark:text-gray-300"
+              className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-10 cursor-pointer text-gray-500 dark:text-gray-300`}
             >
               {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
@@ -213,28 +216,28 @@ export default function SignUp() {
 
           {/* Allergies */}
           <div>
-            <label className="block mb-1 font-medium dark:text-gray-200">Allergies</label>
+            <label className="block mb-1 font-medium dark:text-gray-200">{t('auth.allergies')}</label>
             <textarea
-              placeholder="Allergies (comma separated)"
+              placeholder={t('auth.allergiesPlaceholder')}
               className="w-full px-3 py-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:text-white"
               {...register("allergies")}
             ></textarea>
           </div>
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Account"}
+            {isSubmitting ? t('auth.creating') : t('auth.createAccount')}
           </Button>
         </form>
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-200 mt-3">
-          Already have an account?{" "}
+          {t('auth.alreadyHaveAccount')}{" "}
           <Link href="/login" className="text-blue-500 dark:text-blue-400 hover:underline">
-            Sign in
+            {t('auth.signIn')}
           </Link>
         </p>
 
         <p className="text-xs text-center text-gray-400 dark:text-gray-300 mt-4">
-          Managing Health, Empowering Care • Secure Registration • HIPAA Compliant
+          {t('auth.registrationFooter')}
         </p>
       </div>
     </div>

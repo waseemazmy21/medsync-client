@@ -1,12 +1,13 @@
 import { User, Doctor } from '@/lib/types';
 import Link from 'next/link'
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const navigationItems = [
-  { label: "Dashboard", value: "dashboard" },
-  { label: "Departments", value: "departments", notView: "Doctor" },
-  { label: "Appointments", value: "appointments" },
-  // { label: "Report", value: "report", notView: "Patient" },
+  { labelKey: "navigation.dashboard", value: "dashboard" },
+  { labelKey: "navigation.departments", value: "departments", notView: "Doctor" },
+  { labelKey: "navigation.appointments", value: "appointments" },
+  // { labelKey: "navigation.reports", value: "report", notView: "Patient" },
 ]
 
 type NavProps = {
@@ -15,6 +16,7 @@ type NavProps = {
 }
 
 function Navigation({ atherClasses, user }: NavProps) {
+  const { t } = useTranslation();
   const showReports = user && user.role === 'Doctor' && (user as Doctor).departmentManager;
   console.log("User in Navigation:", user);
   return (
@@ -22,10 +24,10 @@ function Navigation({ atherClasses, user }: NavProps) {
       {
         navigationItems.map(
           item => item.notView !== user?.role &&
-            <Link key={item.label} href={item.value} className="hover:text-blue-500">{item.label}</Link>
+            <Link key={item.labelKey} href={item.value} className="hover:text-blue-500">{t(item.labelKey)}</Link>
         )
       }
-      {showReports && <Link href={'/reports'} className="hover:text-blue-500">Reports</Link>}
+      {showReports && <Link href={'/reports'} className="hover:text-blue-500">{t('navigation.reports')}</Link>}
     </nav>
   )
 }

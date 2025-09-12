@@ -31,12 +31,14 @@ import { User, Lock, Save, Edit3 } from "lucide-react"
 // import { patientService } from "@/lib/services"
 import { Label } from "@/components/ui/label"
 import { updateUser, UserInfoUpdate } from "@/services/userServices"
-import { Gender } from "@/lib/types"
+import { Gender, Doctor } from "@/lib/types"
 import { useAuth } from "@/hooks/useAuth"
+import { useTranslation } from "react-i18next"
 
 export default function ProfilePage() {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
   const { user,setUser } = useAuth()
+  const { t } = useTranslation()
   console.log("user",user);
   
   const queryClient = useQueryClient()
@@ -108,11 +110,11 @@ export default function ProfilePage() {
     },
   })
 
-  const onProfileSubmit = (data) => {
+  const onProfileSubmit = (data: any) => {
     updateProfileMutation.mutate(data)
   }
 
-  const onPasswordSubmit = (data) => {
+  const onPasswordSubmit = (data: any) => {
     changePasswordMutation.mutate(data)
   }
 
@@ -125,15 +127,15 @@ export default function ProfilePage() {
     <div className="p-6 lg:p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-foreground mb-2">My Profile</h1>
-        <p className="text-muted-foreground">Manage your personal information and account settings</p>
+        <h1 className="text-3xl font-semibold text-foreground mb-2">{t('profile.title')}</h1>
+        <p className="text-muted-foreground">{t('profile.subtitle')}</p>
       </div>
 
       <div className="max-w-4xl">
         <Tabs defaultValue="profile" className="space-y-6">
           <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="profile">Profile Information</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="profile">{t('profile.profileInformation')}</TabsTrigger>
+            <TabsTrigger value="security">{t('profile.security')}</TabsTrigger>
           </TabsList>
 
           {/* Profile Tab */}
@@ -144,9 +146,9 @@ export default function ProfilePage() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <User className="h-5 w-5" />
-                      Personal Information
+                      {t('profile.personalInformation')}
                     </CardTitle>
-                    <CardDescription>Update your personal details and medical information</CardDescription>
+                    <CardDescription>{t('profile.updatePersonalDetails')}</CardDescription>
                   </div>
                   {!isEditingProfile && (
                     <Button variant="outline" onClick={() => setIsEditingProfile(true)} className="bg-transparent">
@@ -430,21 +432,21 @@ export default function ProfilePage() {
                     <p className="text-sm mt-1">{user?.email}</p>
                   </div>
                   <div>
-                    <Label className="text-sm font-medium text-muted-foreground">Account Type</Label>
+                    <Label className="text-sm font-medium text-muted-foreground">{t('profile.accountType')}</Label>
                     <p className="text-sm mt-1 capitalize">{user?.role}</p>
                   </div>
                   {user?.role == "Doctor" && <>
                   <div>
-                    <Label className="text-sm font-medium text-muted-foreground">Department</Label>
-                    <p className="text-sm mt-1 capitalize">{user?.department?.name}</p>
+                    <Label className="text-sm font-medium text-muted-foreground">{t('profile.department')}</Label>
+                    <p className="text-sm mt-1 capitalize">{(user as Doctor)?.department?.name}</p>
                   </div>
                   <div>
-                    <Label className="text-sm font-medium text-muted-foreground">Specialization</Label>
-                    <p className="text-sm mt-1 capitalize">{user?.specialization}</p>
+                    <Label className="text-sm font-medium text-muted-foreground">{t('profile.specialization')}</Label>
+                    <p className="text-sm mt-1 capitalize">{(user as Doctor)?.specialization}</p>
                   </div>
                   </>}
                   <div>
-                    <Label className="text-sm font-medium text-muted-foreground">Member Since</Label>
+                    <Label className="text-sm font-medium text-muted-foreground">{t('profile.memberSince')}</Label>
                     <p className="text-sm mt-1">
                       {new Date().toLocaleDateString("en-US", {
                         year: "numeric",

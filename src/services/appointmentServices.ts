@@ -13,7 +13,7 @@ export async function appointments(status: string){
 }
 
 
-export async function bookAppointment(bookingData: Appointment){
+export async function bookAppointment(bookingData: BookAppointment){
     try {
         // const res = api.get("/appointment?status=upcoming&limit=3")
         const res = await api.post("/appointment", bookingData)

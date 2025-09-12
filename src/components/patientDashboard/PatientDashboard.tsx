@@ -12,11 +12,16 @@ import HeadSection from "@/components/HeadSection"
 import { useAuth } from "@/hooks/useAuth"
 import { useAppointments } from "@/hooks/useAppointments"
 import { formatDate, getStatusColor } from "@/lib/utils"
+import { useTranslation } from "react-i18next"
+import { useLanguage } from "@/context/LanguageContext"
 
 
 
 export default function PatientDashboard() {
   const { user } = useAuth()
+  const { t } = useTranslation()
+  const { isRTL } = useLanguage()
+  
   // const { scheduledAppointments, completedAppointments} = useAppointments()
   const {
     scheduledAppointments: { data: scheduledApp = [], isPending: scheduledLoading },
@@ -41,9 +46,9 @@ export default function PatientDashboard() {
       <HeadSection>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Welcome back, {user?.name?.split(" ")[0]}!</h1>
+            <h1 className="text-2xl font-bold mb-2">{t('dashboard.welcomeBack', { name: user?.name?.split(" ")[0] })}</h1>
             <p className="text-blue-100">
-              Manage your appointments, view your medical history, and stay connected with your healthcare providers.
+              {t('dashboard.welcomeMessage')}
             </p>
           </div>
           <div className="hidden md:block">
@@ -62,7 +67,7 @@ export default function PatientDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{scheduledApp.length}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Upcoming Appointments</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.upcomingAppointments')}</p>
               </div>
             </div>
           </CardContent>
@@ -76,7 +81,7 @@ export default function PatientDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{completedApp.length}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Past Appointments</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.pastAppointments')}</p>
               </div>
             </div>
           </CardContent>
@@ -90,7 +95,7 @@ export default function PatientDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">{Departments.length}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Available Departments</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.availableDepartments')}</p>
               </div>
             </div>
           </CardContent>
@@ -105,13 +110,13 @@ export default function PatientDashboard() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-primary" />
-                Upcoming Appointments
+                {t('dashboard.upcomingAppointments')}
               </CardTitle>
-              <CardDescription>Your scheduled appointments</CardDescription>
+              <CardDescription>{t('dashboard.scheduledAppointments')}</CardDescription>
             </div>
             {scheduledApp.length > 3 && <Link href="/appointments">
               <Button variant="outline" size="sm">
-                View All
+                {t('dashboard.viewAll')}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>}
@@ -151,11 +156,11 @@ export default function PatientDashboard() {
             ) : (
               <div className="text-center py-8">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400 mb-4">No upcoming appointments</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">{t('dashboard.noUpcomingAppointments')}</p>
                 <Link href="/departments">
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    Book Appointment
+                    {t('dashboard.bookAppointment')}
                   </Button>
                 </Link>
               </div>
@@ -169,13 +174,13 @@ export default function PatientDashboard() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-green-600" />
-                Past Appointments
+                {t('dashboard.pastAppointments')}
               </CardTitle>
-              <CardDescription>Your past appointments</CardDescription>
+              <CardDescription>{t('dashboard.pastAppointmentsDesc')}</CardDescription>
             </div>
             {completedApp.length > 3 && <Link href="/dashboard/appointments">
               <Button variant="outline" size="sm">
-                View All
+                {t('dashboard.viewAll')}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>}
@@ -217,7 +222,7 @@ export default function PatientDashboard() {
             ) : (
               <div className="text-center py-8">
                 <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">No past appointments</p>
+                <p className="text-gray-600 dark:text-gray-400">{t('dashboard.noPastAppointments')}</p>
               </div>
             )}
           </CardContent>
@@ -225,19 +230,19 @@ export default function PatientDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common tasks you might want to perform</CardDescription>
-        </CardHeader>
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle>{t('dashboard.quickActions')}</CardTitle>
+            <CardDescription>{t('dashboard.quickActionsDesc')}</CardDescription>
+          </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link href="/departments">
               <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
                 <Plus className="h-5 w-5" />
                 <div className="text-left">
-                  <p className="font-medium">Book Appointment</p>
-                  <p className="text-xs text-gray-500">Schedule with a doctor</p>
+                  <p className="font-medium">{t('dashboard.bookAppointment')}</p>
+                  <p className="text-xs text-gray-500">{t('dashboard.scheduleWithDoctor')}</p>
                 </div>
               </Button>
             </Link>
@@ -245,8 +250,8 @@ export default function PatientDashboard() {
               <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
                 <User className="h-5 w-5" />
                 <div className="text-left">
-                  <p className="font-medium">Update Profile</p>
-                  <p className="text-xs text-gray-500">Manage your information</p>
+                  <p className="font-medium">{t('dashboard.updateProfile')}</p>
+                  <p className="text-xs text-gray-500">{t('dashboard.manageInformation')}</p>
                 </div>
               </Button>
             </Link>
@@ -254,8 +259,8 @@ export default function PatientDashboard() {
               <Button className="w-full justify-start gap-3 h-auto p-4 bg-transparent" variant="outline">
                 <Calendar className="h-5 w-5" />
                 <div className="text-left">
-                  <p className="font-medium">View Appointments</p>
-                  <p className="text-xs text-gray-500">See all appointments</p>
+                  <p className="font-medium">{t('dashboard.viewAppointments')}</p>
+                  <p className="text-xs text-gray-500">{t('dashboard.seeAllAppointments')}</p>
                 </div>
               </Button>
             </Link>

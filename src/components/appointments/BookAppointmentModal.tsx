@@ -49,7 +49,7 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
   // Book appointment mutation
   
 
-  const onSubmit = (data: Appointment) => {
+  const onSubmit = (data: BookAppointment) => {
     if (!data.date) return
     bookAppointment.mutate(data)
   }

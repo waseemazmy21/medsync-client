@@ -31,7 +31,7 @@ import { User, Lock, Save, Edit3 } from "lucide-react"
 // import { patientService } from "@/lib/services"
 import { Label } from "@/components/ui/label"
 import { updateUser, UserInfoUpdate } from "@/services/userServices"
-import { Gender } from "@/lib/types"
+import { Gender, Doctor } from "@/lib/types"
 import { useAuth } from "@/hooks/useAuth"
 
 export default function ProfilePage() {
@@ -108,11 +108,11 @@ export default function ProfilePage() {
     },
   })
 
-  const onProfileSubmit = (data) => {
+  const onProfileSubmit = (data: any) => {
     updateProfileMutation.mutate(data)
   }
 
-  const onPasswordSubmit = (data) => {
+  const onPasswordSubmit = (data: any) => {
     changePasswordMutation.mutate(data)
   }
 
@@ -436,11 +436,11 @@ export default function ProfilePage() {
                   {user?.role == "Doctor" && <>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Department</Label>
-                    <p className="text-sm mt-1 capitalize">{user?.department?.name}</p>
+                    <p className="text-sm mt-1 capitalize">{(user as Doctor)?.department?.name}</p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-muted-foreground">Specialization</Label>
-                    <p className="text-sm mt-1 capitalize">{user?.specialization}</p>
+                    <p className="text-sm mt-1 capitalize">{(user as Doctor)?.specialization}</p>
                   </div>
                   </>}
                   <div>

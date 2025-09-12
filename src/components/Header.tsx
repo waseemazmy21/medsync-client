@@ -10,11 +10,15 @@ import { Button } from "./ui/button";
 import LocaleSwitcher from "./Lang";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationIcon } from "./NotificationIcon";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/context/LanguageContext";
 
 
 export default function Header() {
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const { t } = useTranslation();
+  const { isRTL } = useLanguage();
 
   const { user, logout } = useAuth();
 
@@ -57,7 +61,7 @@ export default function Header() {
                 onClick={logout}
                 className="px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600"
               >
-                Logout
+                {t('common.logout')}
               </button>
               {/* Mobile Menu Button */}
               <button
@@ -70,10 +74,10 @@ export default function Header() {
           ) : (
             <div className="flex items-center gap-4">
               <Link href="/login">
-                <Button variant="outline">Login</Button>
+                <Button variant="outline">{t('common.login')}</Button>
               </Link>
               <Link href="/register">
-                <Button>Get Started</Button>
+                <Button>{t('common.getStarted')}</Button>
               </Link>
             </div>
           )}

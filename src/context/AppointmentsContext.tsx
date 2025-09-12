@@ -1,4 +1,4 @@
-import { Appointment, ReviewData } from "@/lib/types";
+import { Appointment, BookAppointment, ReviewData } from "@/lib/types";
 import { handleError } from "@/lib/utils";
 import { appointments, bookAppointment as bookAppointmentApi, updateAppointment as updateAppointmentApi } from "@/services/appointmentServices";
 import { useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ type UpdateAppointmentVariables = { data: Appointment; appointmentID: string };
 type AppointmentsContextType = {
   scheduledAppointments: UseQueryResult<any, Error>;
   completedAppointments: UseQueryResult<any, Error>;
-  bookAppointment: UseMutationResult<Appointment, any, Appointment>;
+  bookAppointment: UseMutationResult<Appointment, any, BookAppointment>;
   updateAppointment: UseMutationResult<Appointment, any, UpdateAppointmentVariables>;
 };
 
@@ -38,7 +38,7 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
   })
 
   const bookAppointment = useMutation({
-    mutationFn: async (data: Appointment) => {
+    mutationFn: async (data: BookAppointment) => {
       const response = await bookAppointmentApi(data)
       return response
     },

@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 
-export default function EmailStep({ onNext, onClose }) {
+export default function EmailStep({ onNext, onClose }: { onNext: (data: any) => void; onClose: () => void }) {
     const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const submitEmail = (data) => {
+  const submitEmail = (data: any) => {
     console.log("Email submitted:", data.email);
     onNext();
   };

@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 // }
 
 export default function PasswordStep({
-
   onBack,
   onClose,
 }) {

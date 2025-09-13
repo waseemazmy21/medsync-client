@@ -74,7 +74,7 @@ export default function DoctorDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900">{scheduledApp.length}</p>
-                <p className="text-sm text-gray-600">Upcoming Today</p>
+                <p className="text-sm text-gray-600">Upcoming</p>
               </div>
             </div>
           </CardContent>

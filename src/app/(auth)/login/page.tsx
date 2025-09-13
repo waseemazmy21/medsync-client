@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { Mail, Lock, EyeOff, Eye } from "lucide-react";
 import Logo from "@/components/Logo";
 import Link from "next/link";
@@ -22,7 +22,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const onSubmit = async (data: unknown) => {
+  const onSubmit = async (data: any) => {
     try {
       setServerError(null);
       await login(data);

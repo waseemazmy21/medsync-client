@@ -29,20 +29,21 @@ export enum BloodType {
 }
 
 export type loginData = {
-    email: string,
-    passowrd: string
+  email: string,
+  passowrd: string
 }
 
 
 export type registerData = {
-    name: string,
-    email: string,
-    phone: string,
-    passowrd: string,
-    gender: Gender,
-    birthDate: Date,
-    bloodType?: BloodType,
-    allergies?: string
+  name: string,
+  email: string,
+  phone: string,
+  password: string,
+  gender: Gender,
+  birthDate: Date,
+  bloodType?: BloodType,
+  allergies?: string,
+  confirmPassword?: string
 }
 
 export interface User {

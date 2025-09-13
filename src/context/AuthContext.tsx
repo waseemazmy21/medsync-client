@@ -1,8 +1,8 @@
 "use client";
 
-import { login as loginService, loginData, register as registerService, registerData, getUser } from "@/services/authService";
+import { login as loginService, register as registerService, getUser } from "@/services/authService";
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { Doctor, User } from '@/lib/types'
+import { Doctor, registerData, User, loginData } from '@/lib/types'
 
 type AuthContextType = {
   user: User | Doctor | null;

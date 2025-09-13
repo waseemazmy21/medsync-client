@@ -1,4 +1,4 @@
-import { BloodType, Gender, loginData, registerData } from "@/lib/types"
+import { loginData, registerData } from "@/lib/types"
 import api from "./axios-instance"
 
 
@@ -11,8 +11,12 @@ export const login = async (loginData: loginData) => {
 
 
 export const register = async (registerData: registerData) => {
-
-    const { data } = await api.post('/auth/register', registerData)
+    const { data } = await api.post('/auth/register', {
+        ...registerData,
+        allergies: registerData.allergies !== undefined
+            ? registerData.allergies.split(",").map((a: string) => a.trim())
+            : undefined,
+    })
     localStorage.setItem("token", data.data.accessToken);
     return data
 

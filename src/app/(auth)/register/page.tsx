@@ -12,20 +12,8 @@ import { handleError } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/context/LanguageContext";
-import { BloodType, Gender } from "@/lib/types";
+import { BloodType, Gender, registerData } from "@/lib/types";
 
-type RegisterFormData = {
-
-  allergies?: string;
-  birthDate: Date;
-  email: string;
-  bloodType?: BloodType;
-  gender: Gender;
-  name: string;
-  password: string;
-  phone: string;
-  confirmPassword?: string;
-};
 
 export default function SignUp() {
   const router = useRouter();
@@ -39,24 +27,19 @@ export default function SignUp() {
     formState: { errors, isSubmitting },
     watch,
     reset
-  } = useForm<RegisterFormData>();
+  } = useForm<registerData>();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
+  const onSubmit: SubmitHandler<registerData> = async (data) => {
     try {
       setServerError(null);
       delete data.confirmPassword;
       if (!data.bloodType) {
         delete data.bloodType;
       }
-      await createAccount({
-        ...data,
-        allergies: data.allergies
-          ? data.allergies.split(",").map((a: string) => a.trim())
-          : undefined,
-      });
+      await createAccount(data);
 
       router.push("/dashboard");
       reset();

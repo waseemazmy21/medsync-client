@@ -24,27 +24,26 @@ export default function Reports() {
   const [viewModalOpen, setViewModalOpen] = useState(false)
   const [selectedReport, setSelectedReport] = useState<Report | null>(null)
 
-  const {user} = useAuth()
+  const { user } = useAuth()
   const doctor = user as Doctor;
   const queryClient = useQueryClient()
 
-  const {data = {} as Report} = useQuery<{reports: Report[], totalReports: number, averageRating: number}>({
+  const { data = {} as Report } = useQuery<{ reports: Report[], totalReports: number, averageRating: number }>({
     queryKey: ["reports"],
-    queryFn: async ()=> {
+    queryFn: async () => {
       const data = await reportsApi(doctor.department._id)
-      console.log("Dzta", data);
-      
-      return  data
+
+      return data.data
     }
   })
 
-  const {reports = [],totalReviews , averageRating} = data as {reports: Report[], totalReports: number,totalReviews: number, averageRating: number}
+  const { reports = [], totalReviews, averageRating } = data as { reports: Report[], totalReports: number, totalReviews: number, averageRating: number }
 
-  const {mutate: GenerateReport, isPending: isGenerating } = useMutation({
+  const { mutate: GenerateReport, isPending: isGenerating } = useMutation({
     mutationFn: async () => {
       const response = await generateReportApi(doctor.department._id)
-      console.log("response",response);
-      
+      console.log("response", response);
+
       return response
     },
     onSuccess: () => {
@@ -57,7 +56,7 @@ export default function Reports() {
     },
   })
 
-  const handleViewReport = (report: Report & {departmentName: string}) => {
+  const handleViewReport = (report: Report & { departmentName: string }) => {
     setSelectedReport(report)
     setViewModalOpen(true)
   }
@@ -68,9 +67,9 @@ export default function Reports() {
           <h1 className="text-3xl font-bold text-gray-900">Department Reports</h1>
           <p className="text-gray-600 mt-1">View analytics and insights for department performance</p>
         </div>
-        <Button onClick={()=> GenerateReport()} disabled={isGenerating} className="flex items-center gap-2">
+        <Button onClick={() => GenerateReport()} disabled={isGenerating} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
-            {isGenerating? "Generating...":"Generate New Report"}
+          {isGenerating ? "Generating..." : "Generate New Report"}
         </Button>
       </div>
 
@@ -133,9 +132,9 @@ export default function Reports() {
               <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No Reports Yet</h3>
               <p className="text-gray-600 mb-4">Generate your first department report to get started with analytics.</p>
-              <Button  onClick={() => GenerateReport()} disabled={isGenerating}>
+              <Button onClick={() => GenerateReport()} disabled={isGenerating}>
                 <Plus className="h-4 w-4 mr-2" />
-                {isGenerating? "Generating...":"Generate Report"}
+                {isGenerating ? "Generating..." : "Generate Report"}
               </Button>
             </CardContent>
           </Card>
@@ -169,7 +168,7 @@ export default function Reports() {
                       </div>
                     </div>
 
-                    <Button variant="outline" size="sm" onClick={() => handleViewReport({...report, departmentName:doctor.department.name})} className="ml-4">
+                    <Button variant="outline" size="sm" onClick={() => handleViewReport({ ...report, departmentName: doctor.department.name })} className="ml-4">
                       <Eye className="h-4 w-4 mr-2" />
                       View Details
                     </Button>
@@ -181,7 +180,7 @@ export default function Reports() {
         )}
       </div>
 
-      {selectedReport && <ViewReportModal report={{...selectedReport, departmentName:doctor.department.name}} open={viewModalOpen} onOpenChange={setViewModalOpen} />}
+      {selectedReport && <ViewReportModal report={{ ...selectedReport, departmentName: doctor.department.name }} open={viewModalOpen} onOpenChange={setViewModalOpen} />}
     </div>
   )
 }

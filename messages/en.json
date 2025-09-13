@@ -207,7 +207,7 @@
     "fee": "Fee",
     "booking": "Booking...",
     "confirmBooking": "Confirm Booking",
-    "updateAppointment": "Update Appointment - {{patientName}}",
+    "updateAppointment": "Update Appointment",
     "appointmentDetails": "Appointment Information",
     "patient": "Patient:",
     "department": "Department:",

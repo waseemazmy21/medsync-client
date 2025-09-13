@@ -228,7 +228,7 @@
     "fee": "الرسوم",
     "booking": "جاري الحجز...",
     "confirmBooking": "تأكيد الحجز",
-    "updateAppointment": "تحديث الموعد - {{patientName}}",
+    "updateAppointment": "تحديث الموعد",
     "appointmentDetails": "معلومات الموعد",
     "patient": "المريض:",
     "department": "القسم:",

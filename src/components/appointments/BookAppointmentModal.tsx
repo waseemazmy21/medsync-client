@@ -9,7 +9,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { CalendarIcon, Clock, FileText } from "lucide-react"
 import { cn, formatDate } from "@/lib/utils"
-import {  BookAppointment, Department } from "@/lib/types"
+import { BookAppointment, Department } from "@/lib/types"
 import { useAppointments } from "@/hooks/useAppointments"
 import { useTranslation } from "react-i18next"
 import { useLanguage } from "@/context/LanguageContext"
@@ -22,7 +22,7 @@ interface BookAppointmentModalProps {
 }
 
 export function BookAppointmentModal({ department, open, onClose }: BookAppointmentModalProps) {
-  const {bookAppointment} = useAppointments()
+  const { bookAppointment } = useAppointments()
   const { t } = useTranslation()
   const { language } = useLanguage()
 
@@ -45,7 +45,11 @@ export function BookAppointmentModal({ department, open, onClose }: BookAppointm
 
   const onSubmit = (data: BookAppointment) => {
     if (!data.date) return
-    bookAppointment.mutate(data)
+    bookAppointment.mutate(data, {
+      onSuccess: () => {
+        handleClose()
+      }
+    })
   }
 
   const handleClose = () => {
